@@ -1,0 +1,277 @@
+body {  
+    font-family: Arial, sans-serif;
+    margin: 0px;
+    padding: 0;
+    background-color: #f4f4f4;
+    background:linear-gradient(to bottom, black,rgb(98, 98, 207) );
+    
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.tiulo {
+    font-size: 45px;
+    font-weight: bold;
+    margin-left: 12px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: goldenrod; 
+}
+
+h1 a {
+    text-decoration: none;
+}
+
+
+nav {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 10px; 
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px; 
+}
+
+nav button {
+    background-color: transparent;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 20;
+}
+main {
+    padding: 20px;
+}
+
+section {
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#filme h2 {
+    color:  rgb(239, 239, 34);
+    text-align: center;
+    font-size: 60px;
+}
+
+.filme.active {
+    display: block;
+}
+
+.filme {
+    margin: 45px;
+    /*width: 250px;*/
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.filme-container {
+    display: flex;
+    transition: all 0.5s ease-in-out;
+    /*justify-content: center;*/
+
+
+.filme img {
+    width: 200px;
+    height: auto;
+    border-radius: 40px;
+
+}
+
+.filme h3 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: rgb(239, 239, 34);
+}
+
+.slider {
+    display: flex;
+    justify-content: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    position: relative;
+}
+
+.slider div {
+    list-style: none;
+    position: absolute;
+}
+
+.slider img {
+    margin: auto;
+    height: 100%;
+    width: 100%;
+    vertical-align: top;
+}
+    
+
+.descricao {
+    height: 50px; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    display: -webkit-box; 
+    -webkit-box-orient: vertical; 
+    /* -webkit-line-clamp: 3;  */
+    margin-top: 10px;  
+}
+
+
+.localization {
+    display: block;
+    margin: 0 auto;
+}
+
+
+.localization h1 {
+    color:rgb(239, 239, 34);
+    text-align: center;
+    font-size: 60px;
+
+}
+
+
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background: #333;
+    color: #fff;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+
+
+.promo-banner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #ff4b2b;
+    color: white;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(255,75,43,0.3);
+  }
+  /* Container for content and images side by side on md+ */
+  .promo-content-wrapper {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+  .image-slider {
+    width: 100%;
+    height: 220px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    margin-bottom: 20px;
+  }
+  .image-slider img {
+    position: absolute;
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    border-radius: 12px;
+  }
+  .image-slider img.active {
+    opacity: 1;
+    position: relative;
+  }
+  .promo-text {
+    text-align: center;
+    padding: 0 20px;
+  }
+  .promo-text h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    user-select: none;
+  }
+  .promo-text p {
+    margin: 10px 0 30px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    max-width: 600px;
+    user-select: none;
+  }
+  .promo-text button {
+    background-color: #fff;
+    color: #ff4b2b;
+    border: none;
+    padding: 14px 32px;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    box-shadow: 0 2px 8px rgb(255 75 43 / 0.4);
+    user-select: none;
+  }
+  .promo-text button:hover {
+    background-color: #ff4b2b;
+    color: white;
+    box-shadow: 0 4px 12px rgb(255 75 43 / 0.6);
+  }
+  /* @media (min-width: 768px) {
+    .promo-banner {
+      padding: 30px 20px;
+    }
+    .promo-content-wrapper {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      max-height: 250px;
+    }
+    .image-slider {
+      width: 48%;
+      height: 250px;
+      margin-bottom: 0;
+    }
+    .promo-text {
+      width: 48%;
+      text-align: left;
+      padding: 0 20px 0 0;
+    }
+    .promo-text h1 {
+      font-size: 3rem;
+    }
+    .promo-text p {
+      font-size: 1.3rem;
+      max-width: none;
+      margin-bottom: 40px;
+    }
+  } */
+
+
+
+
+
+  

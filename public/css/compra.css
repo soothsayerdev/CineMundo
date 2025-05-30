@@ -1,0 +1,125 @@
+* {
+    box-sizing: border-box; /* Adiciona box-sizing para todos os elementos */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    background: linear-gradient(to bottom, black, rgb(98, 98, 207)); /* Gradiente em todo o fundo */
+    min-height: 100vh; /* Garante que o body ocupe pelo menos a altura total da janela */
+}
+
+header {
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+h1 a {
+    color: #fff;
+    text-decoration: none;
+}
+
+main {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1); /* Fundo semi-transparente */
+    border-radius: 10px;
+    margin: auto;
+}
+
+h2 {
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+}
+
+form {
+    max-width: 400px;
+    margin-right: 20px;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+input[type="text"],
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+button {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+.combos-container {
+    max-width: 400px;
+    margin-left: 20px;
+}
+
+.combo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.combo img {
+    width: 70px; 
+    height: auto;
+    margin-right: 10px;
+}
+
+.mensagem-erro {
+    display: none;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: rgba(255, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 5px;
+    text-align: center;
+}
+
+footer {
+    text-align: center;
+    padding: 10px 0;
+    color: #fff;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin-top: 20px;
+    background: black; /* Fundo preto para o rodapé */
+}
