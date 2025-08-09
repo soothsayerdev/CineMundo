@@ -1,5 +1,3 @@
-Sure! Here is the professional README in English, with all emojis removed.
-
 CineMundo Project
 Project Overview
 CineMundo is a comprehensive web platform for selling movie tickets, developed as a school project. The application is designed to be intuitive and functional, allowing users to view showtimes, get detailed information about films, and securely purchase tickets.
