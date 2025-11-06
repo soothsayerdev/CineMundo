@@ -1,23 +1,42 @@
-body {  
+body {
     font-family: Arial, sans-serif;
-    margin: 0px;
+    margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
-    background:linear-gradient(to bottom, black,rgb(98, 98, 207) );
-    
+    background: linear-gradient(to bottom, black, rgb(98, 98, 207));
+    color: #333;
+}
+ 
+header {
+    background-color: #1c1c1c;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-header {
-    background: #333;
-    color: #fff;
-    padding: 10px 0;
-    text-align: center;
+header .tiulo {
+    margin: 0;
+    font-size: 2.5em;
+    font-weight: bold;
 }
 
 .tiulo {
     font-size: 45px;
     font-weight: bold;
     margin-left: 12px;
+}
+
+header nav ul li {
+    margin-left: 20px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1em;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -57,6 +76,72 @@ nav button {
 main {
     padding: 20px;
 }
+/* --- ESTILOS DO CARROSSEL DE FILMES --- */
+
+#filmes-em-cartaz {
+    padding: 40px 0;
+    text-align: center;
+}
+
+.carrossel-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 1200px; 
+    margin: 0 auto; 
+    position: relative;
+}
+
+/* A "janela" por onde os filmes são vistos */
+.carrossel-viewport {
+    width: 100%;
+    overflow: hidden; 
+}
+
+/* O "trilho" que segura todos os filmes */
+.carrossel-track {
+    display: flex; 
+    transition: transform 0.5s ease-in-out;
+}
+
+/* Cada filme individual no carrossel */
+.carrossel-slide {
+    min-width: 220px; 
+    margin: 0 10px; 
+    box-sizing: border-box;
+}
+
+.carrossel-slide img {
+    width: 100%;
+    height: 330px; 
+    object-fit: cover; 
+    border-radius: 10px;
+    display: block; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+/* Estilo dos botões de navegação */
+.carrossel-btn {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 10; 
+}
+
+/* Posicionamento específico para cada botão */
+#prevBtn {
+    position: absolute;
+    left: -20px;
+}
+
+#nextBtn {
+    position: absolute;
+    right: -20px;
+}
+
 
 section {
     margin-bottom: 20px;
@@ -66,63 +151,6 @@ section {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-#filme h2 {
-    color:  rgb(239, 239, 34);
-    text-align: center;
-    font-size: 60px;
-}
-
-.filme.active {
-    display: block;
-}
-
-.filme {
-    margin: 45px;
-    /*width: 250px;*/
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-}
-
-.filme-container {
-    display: flex;
-    transition: all 0.5s ease-in-out;
-    /*justify-content: center;*/
-
-
-.filme img {
-    width: 200px;
-    height: auto;
-    border-radius: 40px;
-
-}
-
-.filme h3 {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: rgb(239, 239, 34);
-}
-
-.slider {
-    display: flex;
-    justify-content: center;
-    justify-content: center;
-    width: 100%;
-    position: relative;
-    position: relative;
-}
-
-.slider div {
-    list-style: none;
-    position: absolute;
-}
-
-.slider img {
-    margin: auto;
-    height: 100%;
-    width: 100%;
-    vertical-align: top;
-}
-    
 
 .descricao {
     height: 50px; 
@@ -135,30 +163,78 @@ section {
 }
 
 
-.localization {
-    display: block;
-    margin: 0 auto;
-}
-
-
-.localization h1 {
-    color:rgb(239, 239, 34);
+/*css para o sobre*/
+#sobre {
+    padding: 40px 20px;
     text-align: center;
-    font-size: 60px;
-
+    background-color: #fff;
+    color: #333;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px;
 }
 
+#sobre h2 {
+    color: goldenrod;
+}
+
+.sobre-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.sobre-texto {
+    flex: 1;
+}
+
+.sobre-imagem {
+    flex: 1;
+}
+
+.sobre-imagem img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+#localizacao {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #fff;
+    margin: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#localizacao h1 {
+    color: goldenrod;
+    font-size: 60px;
+}
+
+#localizacao iframe {
+    width: 100%;
+    max-width: 800px;
+    height: 450px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
 
 footer {
+    background-color: #1c1c1c;
+    color: white;
     text-align: center;
-    padding: 10px 0;
-    background: #333;
-    color: #fff;
-    position: relative;
-    bottom: 0;
+    padding: 20px;
     width: 100%;
+    box-sizing: border-box;
+    margin-top: 40px;
 }
-
 
 
 .promo-banner {
@@ -240,35 +316,6 @@ footer {
     color: white;
     box-shadow: 0 4px 12px rgb(255 75 43 / 0.6);
   }
-  /* @media (min-width: 768px) {
-    .promo-banner {
-      padding: 30px 20px;
-    }
-    .promo-content-wrapper {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      max-height: 250px;
-    }
-    .image-slider {
-      width: 48%;
-      height: 250px;
-      margin-bottom: 0;
-    }
-    .promo-text {
-      width: 48%;
-      text-align: left;
-      padding: 0 20px 0 0;
-    }
-    .promo-text h1 {
-      font-size: 3rem;
-    }
-    .promo-text p {
-      font-size: 1.3rem;
-      max-width: none;
-      margin-bottom: 40px;
-    }
-  } */
 
 
 

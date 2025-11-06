@@ -6,17 +6,7 @@
     <title>CineMundo - Seu Cinema Online</title>
     <link rel="stylesheet" href="css/principal.css">
 </head>
-<script>
-    const images = document.querySelectorAll('.image-slider img');
-    let currentIndex = 0;
-    function showNextImage() {
-      images[currentIndex].classList.remove('active');
-      currentIndex = (currentIndex + 1) % images.length;
-      images[currentIndex].classList.add('active');
-    }
-    setInterval(showNextImage, 4000);
-  </script>
-<body>
+<body> 
     <header>
         <nav>
             <h1 class="titulo" >CineMundo 🗺️ </h1>
@@ -51,80 +41,79 @@
                   </div>
                 </div>
               </div>
-        </section>
+        </section> 
 
-        <section id="filme">
+        <section id="filmes-em-cartaz">
             <h2>Filmes em Cartaz</h2>
-            <div class="slider">
-                <button onclick="minhaFuncao()" src="img/proximo.jpg.png"></button>
-                <div class="filme-container">
-                    <div class="filme"> /*1*/
-                        <img src="img/minecraft.jpg" alt="Cartaz do Filme Minecraft"/>
-                        <h3>Um Filme Minecraft</h3>
-                        <p class="descricao">O malévolo Ender Dragon inicia um caminho de destruição, levando uma jovem e seu grupo de aventureiros improváveis a partir para salvar o Overworld.</p>
+            <div class="carrossel-container">
+                <button id="prevBtn" class="carrossel-btn">&lt;</button>
+
+                <div class="carrossel-viewport">
+                    <div class="carrossel-track">
+                        
+                        <div class="carrossel-slide">
+                            <a href="autodacompadecida.html"><img src="./img/autodacompadecida.jpg" alt="O Auto da Compadecida 2"></a>
+                        </div>
+                        <div class="carrossel-slide">
+                            <a href="bailarina.html"><img src="./img/bailarinajohn.jpg" alt="Bailarina"></a>
+                        </div>
+                        <div class="carrossel-slide">
+                            <a href="aindaestouaqui.html"><img src="./img/aindaestouaqui.jpg" alt="Ainda Estou Aqui"></a>
+                        </div>
+                        <div class="carrossel-slide">
+                            <a href="capitao.html"><img src="./img/capitaoamerica.jpg" alt="Capitão América"></a>
+                        </div>
+                        <div class="carrossel-slide">
+                            <a href="garotadinarmaquesa.html"><img src="./img/garotadinarmaquesa.jpg" alt="A Garota Dinamarquesa"></a>
+                        </div>
+                        <div class="carrossel-slide">
+                            <a href="meninoegarca.html"><img src="./img/meninoegarca.jpg" alt="O Menino e a Garça"></a>
+                        </div>
+                        <div class="carrossel-slide">
+                            <a href="minecraft.html"><img src="./img/minecraft.jpg" alt="Minecraft: O Filme"></a>
+                        </div>
+                        <div class="carrossel-slide">
+                            <a href="nosferatu.html"><img src="./img/nosferatu.jpg" alt="Nosferatu"></a>
+                        </div>
+                        <div class="carrossel-slide">
+                            <a href="segundotempo.html"><img src="./img/segundotempo.jpg" alt="Segundo Tempo"></a>
+                        </div>
+                        <div class="carrossel-slide">
+                            <a href="skarnado.html"><img src="./img/skarnado.jpg" alt="Sharknado"></a>
+                        </div>
+                        <div class="carrossel-slide">
+                            <a href="sobleidocrime.html"><img src="./img/sobleidocrime.jpg" alt="Sob a Lei do Crime"></a>
+                        </div>
+                        <div class="carrossel-slide">
+                            <a href="thunderbolts.html"><img src="./img/thunderbolts.jpg" alt="Thunderbolts"></a>
+                        </div>
+
                     </div>
-                    <div class="filme">/*2*/
-                        <img src="img/bailarinajohn.jpg" alt="Cartaz do Filme Bailarina"/>
-                        <h3><a href="bailarina.html">Bailarina - John Wick</a></h3>
-                        <p class="descricao">Bailarina é um filme de ação e suspense que conta a história de Eve Macarro, uma assassina que busca vingança pela morte de sua família.</p>
-                    </div>
-                    <div class="filme">/*3*/
-                        <img src="img/thunderbolts.jpg" alt="Cartaz do Filme Thunderbolts"/>
-                        <h3>Thunderbolts</h3>
-                        <p class="descricao">Um grupo de supervilões e anti-heróis entram em missões para o governo. Baseado na série de quadrinhos de mesmo nome.</p>
-                    </div>
-                    <div class="filme">/*4*/
-                        <img src="img/capitaoamerica.jpg" alt="Cartaz do Filme Capitão América"/>
-                        <h3>Capitão América: Admirável Mundo Novo</h3>
-                        <p class="descricao">Uma sequência de Falcão e o Soldado Invernal da Marvel Studios, segue Sam Wilson como o novo Capitão América.</p>
-                    </div>
-                    <div class="filme">/*5*/
-                        <img src="img/nosferatu.jpg" alt="Cartaz do Filme Nosferatu"/>
-                        <h3>Nosferatu</h3>
-                        <p class="descricao">Um clássico do terror que conta a história do vampiro Conde Orlok.</p>
-                    </div>
-                    <div class="filme">/*6*/
-                        <img src="img/autodacompadecida.jpg" alt="Cartaz do Filme O Auto da Compadecida 2"/>
-                        <h3>O Auto da Compadecida 2</h3>
-                        <p class="descricao">Continuação da famosa comédia brasileira que mistura humor e drama.</p>
-                    </div>
-                    <div class="filme">/*7*/
-                        <img src="img/sobaleidocrime.jpg" alt="Cartaz do Filme Sob a Lei do Crime"/>
-                        <h3>Sob a Lei do Crime</h3>
-                        <p class="descricao">Um thriller policial que explora os limites da lei e da moralidade.</p>
-                    </div>
-                    <div class="filme">/*8*/
-                        <img src="img/segundotempo.jpg" alt="Cartaz do Filme 45 do Segundo Tempo"/>
-                        <h3>45 do Segundo Tempo</h3>
-                        <p class="descricao">Uma comédia romântica que se passa em um jogo de futebol.</p>
-                    </div>
-                    <div class="filme">/*9*/
-                        <img src="img/meninoegarca.jpg" alt="Cartaz do Filme O Menino e a Garça"/>
-                        <h3>O Menino e a Garça</h3>
-                        <p class="descricao">Uma história tocante sobre amizade e superação.</p>
-                    </div>
-                    <div class="filme">/*10*/
-                        <img src="img/aindaestouaqui.jpg" alt="Cartaz do Filme Ainda Estou Aqui"/>
-                        <h3>Ainda Estou Aqui</h3>
-                        <p class="descricao">Um drama que explora a luta de um homem para encontrar seu lugar no mundo.</p>
-                    </div>
-                    <div class="descricao">/*11*/
-                        <img src="img/skarnado.jpg" alt="Cartaz do Filme Skarnado"/>
-                        <h3>Skarnado</h3>
-                        <p class="descricao">Uma comédia de terror que mistura tubarões e tornados.</p>
-                    </div>
-                    <div class="filme">/*12*/
-                        <img src="img/garotadinarmaquesa.jpg" alt="Cartaz do Filme A Garota Dinarmaquesa"/>
-                        <h3>Uma Noite em Paris</h3>
-                        <p class="descricao"></p>
-                    </div>
-                    <button onclick="minhaFuncao()" src="img/proximo.jpg.png"></button>
                 </div>
+
+                <button id="nextBtn" class="carrossel-btn">&gt;</button>
+            </div>
         </section>
         <br><br><br><br><br>
         <section id="sobre">
-            <h2>Sobre Nós</h2>
-            <p>Bem-vindo ao CinePico, seu destino para os melhores filmes!</p>
+            <h2>Sobre o CineMundo</h2>
+            <div class="sobre-container">
+                <div class="sobre-texto">
+                    <h3>Bem-vindo ao Mundo da Magia do Cinema!</h3>
+                    <p>
+                        Desde a nossa fundação em 2025, o CineMundo tem uma missão clara: transformar cada sessão de cinema em uma experiência inesquecível. Não somos apenas um cinema; somos um ponto de encontro para amigos, famílias e apaixonados pela sétima arte.
+                    </p>
+                    <p>
+                        Nossas salas são equipadas com tecnologia de ponta, som imersivo e poltronas confortáveis para garantir o máximo de conforto. Além da nossa seleção de filmes, que vai dos grandes blockbusters às joias do cinema independente, oferecemos uma bomboniere com as melhores guloseimas para completar sua experiência.
+                    </p>
+                    <p>
+                        No CineMundo, cada detalhe é pensado para você. Venha fazer parte da nossa história!
+                    </p>
+                </div>
+                <div class="sobre-imagem">
+                    <img src="./img/combo1.jpg.png" alt="Sala de cinema do CineMundo">
+                </div>
+            </div>
         </section>
         <br><br><br><br><br>
 
@@ -157,5 +146,8 @@
     <footer>
         <p>&copy; 2023 CinePico. Todos os direitos reservados.</p>
     </footer>
+
+    <script src="./script.js"></script>
+
 </body>
 </html>
