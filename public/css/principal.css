@@ -1,324 +1,451 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(to bottom, black, rgb(98, 98, 207));
-    color: #333;
+/*
+HEAD: Reset e Estilos Globais
+- Reset Universal (*): Aplica 'box-sizing: border-box' e remove margens/paddings padrão.
+- Body: Define a fonte global, o fundo gradiente escuro ('#0b0b2b' para '#090a0f') e 'overflow: hidden' para conter a animação.
+
+MODULE: Animação de Background (Estrelas)
+- .stars: Cria as estrelas estáticas usando 'box-shadow' múltiplo. Anima a opacidade com 'twinkle'.
+- .shooting-star: Cria as estrelas cadentes com 'linear-gradient'. Anima a posição com 'shoot', usando 'animation-delay' para escalonar.
+- @keyframes twinkle: Anima a opacidade (0.8 a 0.4) para simular o piscar.
+- @keyframes shoot: Anima a 'transform: translateX/translateY' para simular o movimento diagonal da estrela cadente.
+
+LAYOUT: Estrutura Principal
+- Header/Footer: Define o layout flexível, alinhamento e cores de fundo escuras ('#1c1c1c') para cabeçalho e rodapé.
+- Nav: Estiliza os elementos de navegação (lista, links).
+- Main: Define o padding principal.
+
+TYPOGRAPHY: Tipografia
+- Títulos (h1-h6): Define a cor padrão dos títulos para laranja-escuro ('#e67e22').
+
+CONTENT: Seções de Conteúdo
+- Section, #sobre, #localizacao: Aplica um fundo escuro semitransparente ('rgba(40, 40, 40, 0.75)'), cor de fonte branca e 'text-align: center', conforme solicitado.
+
+MODULE: Carrossel
+- .carrossel-container: Define o container principal com 'position: relative' para ancorar os botões.
+- .carrossel-viewport: Atua como a máscara com 'overflow: hidden'.
+- .carrossel-track: Container flexível para os slides, com 'transition' aplicada à propriedade 'transform'.
+- .carrossel-slide: Define a largura mínima e margens de cada item.
+- .carrossel-btn: Posiciona os botões de forma absoluta, centralizados verticalmente.
+
+MODULE: Banner Promocional
+- .promo-banner: Estiliza o banner de promoção.
+- .image-slider: Gerencia o fade-in/out das imagens de promoção com 'opacity' e 'transition'.
+*/
+
+* {
+ margin: 0;
+ padding: 0;
+ box-sizing: border-box;
 }
- 
+
+body {
+ font-family: Arial, sans-serif;
+ margin: 0;
+  padding: 0;
+ min-height: 100vh;
+ background: linear-gradient(to bottom, #0b0b2b, #1b2735 70%, #090a0f);
+ overflow: hidden;
+ color: #fff; /* Alterado de #333 para ser legível */
+}
+
 header {
-    background-color: #1c1c1c;
-    color: white;
-    padding: 15px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    box-sizing: border-box;
+  background-color: #1c1c1c;
+  color: white;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+    z-index: 100; /* Garante que fique acima da animação */
+    position: relative;
 }
 
 header .tiulo {
-    margin: 0;
-    font-size: 2.5em;
-    font-weight: bold;
+  margin: 0;
+  font-size: 2.5em;
+  font-weight: bold;
 }
 
 .tiulo {
-    font-size: 45px;
-    font-weight: bold;
-    margin-left: 12px;
+  font-size: 45px;
+  font-weight: bold;
+  margin-left: 12px;
 }
 
 header nav ul li {
-    margin-left: 20px;
+  margin-left: 20px;
 }
 
 header nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 1.1em;
+  color: white;
+  text-decoration: none;
+  font-size: 1.1em;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: goldenrod; 
+  color: #e67e22; /* Alterado de goldenrod para laranja-escuro */
 }
 
 h1 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
-
 nav {
-    display: flex;
-    justify-content: space-between; 
-    align-items: center; 
-    padding: 10px; 
+  display: flex;
+  justify-content: space-between; 
+  align-items: center; 
+  padding: 10px; 
 }
 
 nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 nav ul li {
-    display: inline;
-    margin: 0 15px; 
+  display: inline;
+  margin: 0 15px; 
 }
 
 nav button {
-    background-color: transparent;
-    border: none;
-    font-size: 2rem;
-    cursor: pointer;
-    z-index: 20;
+  background-color: transparent;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 20;
 }
 main {
-    padding: 20px;
+  padding: 20px;
+    position: relative; /* Garante que o conteúdo principal fique acima da animação */
+    z-index: 50;
 }
-/* --- ESTILOS DO CARROSSEL DE FILMES --- */
 
 #filmes-em-cartaz {
-    padding: 40px 0;
-    text-align: center;
+  padding: 40px 0;
+  text-align: center;
+    /* Remove o fundo branco para aplicar o estilo da 'section' */
 }
 
 .carrossel-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    max-width: 1200px; 
-    margin: 0 auto; 
-    position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1200px; 
+  margin: 0 auto; 
+  position: relative;
 }
 
-/* A "janela" por onde os filmes são vistos */
 .carrossel-viewport {
-    width: 100%;
-    overflow: hidden; 
+  width: 100%;
+  overflow: hidden; 
 }
 
-/* O "trilho" que segura todos os filmes */
 .carrossel-track {
-    display: flex; 
-    transition: transform 0.5s ease-in-out;
+  display: flex; 
+  transition: transform 0.5s ease-in-out;
 }
 
-/* Cada filme individual no carrossel */
 .carrossel-slide {
-    min-width: 220px; 
-    margin: 0 10px; 
-    box-sizing: border-box;
+  min-width: 220px; 
+  margin: 0 10px; 
+  box-sizing: border-box;
 }
 
 .carrossel-slide img {
-    width: 100%;
-    height: 330px; 
-    object-fit: cover; 
-    border-radius: 10px;
-    display: block; 
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-/* Estilo dos botões de navegação */
-.carrossel-btn {
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    padding: 15px;
-    font-size: 24px;
-    cursor: pointer;
-    border-radius: 50%;
-    z-index: 10; 
+  width: 100%;
+  height: 330px; 
+  object-fit: cover; 
+  border-radius: 10px;
+  display: block; 
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
-/* Posicionamento específico para cada botão */
+.carrossel-btn {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 10; 
+}
+
 #prevBtn {
-    position: absolute;
-    left: -20px;
+  position: absolute;
+  left: -20px;
 }
 
 #nextBtn {
-    position: absolute;
-    right: -20px;
+  position: absolute;
+  right: -20px;
 }
-
 
 section {
-    margin-bottom: 20px;
-    background: #fff;
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+ margin-bottom: 20px;
+ background: rgba(40, 40, 40, 0.75); /* Fundo mais claro/menos transparente */
+ padding: 15px;
+ border-radius: 5px;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Centraliza títulos */
 }
-
 
 .descricao {
-    height: 50px; 
-    overflow: hidden; 
-    text-overflow: ellipsis;
-    display: -webkit-box; 
-    -webkit-box-orient: vertical; 
-    /* -webkit-line-clamp: 3;  */
-    margin-top: 10px;  
+  height: 50px; 
+  overflow: hidden; 
+  text-overflow: ellipsis;
+  display: -webkit-box; 
+  -webkit-box-orient: vertical; 
+  margin-top: 10px; 
 }
 
-
-/*css para o sobre*/
 #sobre {
-    padding: 40px 20px;
-    text-align: center;
-    background-color: #fff;
-    color: #333;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin: 20px;
+  padding: 40px 20px;
+  text-align: center;
+  background-color: rgba(40, 40, 40, 0.75); /* Fundo mais claro/menos transparente */
+  color: #fff; /* Alterado de #333 */
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 20px;
 }
 
 #sobre h2 {
-    color: goldenrod;
+  color: #e67e22; /* Alterado de goldenrod */
 }
 
 .sobre-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
-    text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: left;
 }
 
 .sobre-texto {
-    flex: 1;
+  flex: 1;
 }
 
 .sobre-imagem {
-    flex: 1;
+  flex: 1;
 }
 
 .sobre-imagem img {
-    max-width: 100%;
-    border-radius: 10px;
+  max-width: 100%;
+  border-radius: 10px;
 }
 
 #localizacao {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    background-color: #fff;
-    margin: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: rgba(40, 40, 40, 0.75); /* Fundo mais claro/menos transparente */
+  margin: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 #localizacao h1 {
-    color: goldenrod;
-    font-size: 60px;
+  color: #e67e22; /* Alterado de goldenrod */
+  font-size: 60px;
 }
 
 #localizacao iframe {
-    width: 100%;
-    max-width: 800px;
-    height: 450px;
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 800px;
+  height: 450px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 footer {
-    background-color: #1c1c1c;
-    color: white;
-    text-align: center;
-    padding: 20px;
-    width: 100%;
-    box-sizing: border-box;
-    margin-top: 40px;
+  background-color: #1c1c1c;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 40px;
+    position: relative; /* Garante que fique acima da animação */
+    z-index: 100;
 }
 
-
 .promo-banner {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: #ff4b2b;
-    color: white;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(255,75,43,0.3);
-  }
-  /* Container for content and images side by side on md+ */
-  .promo-content-wrapper {
-    max-width: 1200px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-  }
-  .image-slider {
-    width: 100%;
-    height: 220px;
-    position: relative;
-    overflow: hidden;
-    border-radius: 12px;
-    margin-bottom: 20px;
-  }
-  .image-slider img {
-    position: absolute;
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-    top: 0;
-    left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #ff4b2b;
+  color: white;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(255,75,43,0.3);
+}
+
+.promo-content-wrapper {
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.image-slider {
+  width: 100%;
+  height: 220px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.image-slider img {
+  position: absolute;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  border-radius: 12px;
+}
+
+.image-slider img.active {
+  opacity: 1;
+  position: relative;
+}
+
+.promo-text {
+  text-align: center;
+  padding: 0 20px;
+}
+
+.promo-text h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  user-select: none;
+    color: white; /* Garante que o H1 da promoção seja branco */
+}
+
+.promo-text p {
+  margin: 10px 0 30px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  max-width: 600px;
+  user-select: none;
+}
+
+.promo-text button {
+  background-color: #fff;
+  color: #ff4b2b;
+  border: none;
+  padding: 14px 32px;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: 0 2px 8px rgb(255 75 43 / 0.4);
+  user-select: none;
+}
+
+.promo-text button:hover {
+  background-color: #ff4b2b;
+  color: white;
+  box-shadow: 0 4px 12px rgb(255 75 43 / 0.6);
+}
+
+/* --- CÓDIGO DO BACKGROUND ANIMADO --- */
+.stars {
+ width: 1px;
+ height: 1px;
+ position: absolute;
+ background: white;
+ box-shadow: 2vw 5vh 2px white, 10vw 8vh 2px white, 15vw 15vh 1px white,
+  22vw 22vh 1px white, 28vw 12vh 2px white, 32vw 32vh 1px white,
+  38vw 18vh 2px white, 42vw 35vh 1px white, 48vw 25vh 2px white,
+  53vw 42vh 1px white, 58vw 15vh 2px white, 63vw 38vh 1px white,
+  68vw 28vh 2px white, 73vw 45vh 1px white, 78vw 32vh 2px white,
+  83vw 48vh 1px white, 88vw 20vh 2px white, 93vw 52vh 1px white,
+  98vw 35vh 2px white, 5vw 60vh 1px white, 12vw 65vh 2px white,
+  18vw 72vh 1px white, 25vw 78vh 2px white, 30vw 85vh 1px white,
+  35vw 68vh 2px white, 40vw 82vh 1px white, 45vw 92vh 2px white,
+  50vw 75vh 1px white, 55vw 88vh 2px white, 60vw 95vh 1px white,
+  65vw 72vh 2px white, 70vw 85vh 1px white, 75vw 78vh 2px white,
+  80vw 92vh 1px white, 85vw 82vh 2px white, 90vw 88vh 1px white,
+  95vw 75vh 2px white;
+ animation: twinkle 8s infinite linear;
+  top: 0;
+  left: 0;
+  z-index: 1; /* Coloca atrás do conteúdo */
+}
+
+.shooting-star {
+ position: absolute;
+ width: 100px;
+ height: 2px;
+ background: linear-gradient(90deg, white, transparent);
+ animation: shoot 3s infinite ease-in;
+  z-index: 2; /* Coloca atrás do conteúdo */
+}
+
+.shooting-star:nth-child(1) {
+ top: 20%;
+ left: -100px;
+ animation-delay: 0s;
+}
+
+.shooting-star:nth-child(2) {
+ top: 35%;
+ left: -100px;
+ animation-delay: 1s;
+}
+
+.shooting-star:nth-child(3) {
+ top: 50%;
+ left: -100px;
+ animation-delay: 2s;
+}
+
+@keyframes twinkle {
+ 0%,
+100% {
+ opacity: 0.8;
+}
+50% {
+opacity: 0.4; }
+}
+
+@keyframes shoot { 0% {
+transform: translateX(0) translateY(0) rotate(25deg);
+ opacity: 1;
+}
+100% {
+    transform: translateX(120vw) translateY(50vh) rotate(25deg);
     opacity: 0;
-    transition: opacity 1s ease-in-out;
-    border-radius: 12px;
-  }
-  .image-slider img.active {
-    opacity: 1;
-    position: relative;
-  }
-  .promo-text {
-    text-align: center;
-    padding: 0 20px;
-  }
-  .promo-text h1 {
-    margin: 0;
-    font-size: 2.5rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    user-select: none;
-  }
-  .promo-text p {
-    margin: 10px 0 30px;
-    font-size: 1.2rem;
-    font-weight: 500;
-    max-width: 600px;
-    user-select: none;
-  }
-  .promo-text button {
-    background-color: #fff;
-    color: #ff4b2b;
-    border: none;
-    padding: 14px 32px;
-    font-size: 1rem;
-    font-weight: 700;
-    border-radius: 40px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    box-shadow: 0 2px 8px rgb(255 75 43 / 0.4);
-    user-select: none;
-  }
-  .promo-text button:hover {
-    background-color: #ff4b2b;
-    color: white;
-    box-shadow: 0 4px 12px rgb(255 75 43 / 0.6);
-  }
+    }
+}
 
-
-
-
-
-  
+.stars::after {
+content: "";
+position: absolute;
+width: 1px;
+height: 1px;
+background: white;
+box-shadow: 8vw 12vh 2px white, 16vw 18vh 1px white, 24vw 25vh 2px white,
+33vw 15vh 1px white, 41vw 28vh 2px white, 49vw 35vh 1px white,
+57vw 22vh 2px white, 65vw 42vh 1px white, 73vw 28vh 2px white,
+81vw 48vh 1px white, 89vw 32vh 2px white, 97vw 45vh 1px white,
+3vw 68vh 2px white, 11vw 75vh 1px white, 19vw 82vh 2px white, 27vw 88vh 1px white, 35vw 72vh 2px white, 43vw 85vh 1px white,
+51vw 92vh 2px white, 59vw 78vh 1px white;
+ animation: twinkle 6s infinite linear reverse;
+}
