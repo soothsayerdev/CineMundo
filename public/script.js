@@ -1,55 +1,79 @@
 /*
-HEAD: Event Listeners e Manipulação do DOM
-- DOMContentLoaded: Inicializa o script após o carregamento completo do DOM.
-- Seletores: Armazena referências a elementos-chave (track, botões, slides) para manipulação.
-- Validação: Interrompe a execução se os componentes essenciais do carrossel não forem encontrados.
-
-CORE: Lógica do Carrossel (Slide-a-Slide, Loop Infinito)
-- Variáveis de Controle: Define 'currentIndex' para rastrear o slide ativo e 'totalSlides'.
-- Cálculo de Deslocamento: Utiliza 'getBoundingClientRect()' para obter a largura dinâmica do slide e adiciona a margem (20px) para definir o 'slideWidth' exato por translação.
-- Função 'moveToSlide': Abstrai a lógica de movimento. Aplica um 'transform: translateX()' ao 'track' para movê-lo para o índice alvo.
-- Event Handlers (Click):
-    - 'nextButton': Incrementa 'currentIndex'. Implementa a lógica de loop (reseta para 0 se 'nextIndex >= totalSlides').
-    - 'prevButton': Decrementa 'currentIndex'. Implementa a lógica de loop (define como 'totalSlides - 1' se 'prevIndex < 0').
+HEAD: Script Principal - CineMundo
+- Contém: Lógica do Carrossel de Filmes (Loop Infinito) e Hero Slider (Links Clicáveis).
 */
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    // ==================================================
+    // 1. LÓGICA DO CARROSSEL DE FILMES
+    // ==================================================
+
     const track = document.querySelector('.carrossel-track');
     const prevButton = document.getElementById('prevBtn');
     const nextButton = document.getElementById('nextBtn');
-    const slides = Array.from(track.children);
+    const viewport = document.querySelector('.carrossel-viewport');
+    const itemsPerScreen = 4;
 
-    if (!track || !prevButton || !nextButton || slides.length === 0) {
-        console.error('Elementos do carrossel não foram encontrados!');
-        return;
+    if (track && prevButton && nextButton && viewport) {
+        const slides = Array.from(track.children);
+        let currentIndex = 0;
+
+        const updateCarousel = () => {
+            const slideWidth = viewport.offsetWidth / itemsPerScreen;
+            track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+        };
+
+        nextButton.addEventListener('click', () => {
+            const totalSlides = slides.length;
+            const maxIndex = totalSlides - itemsPerScreen;
+
+            if (currentIndex < maxIndex) {
+                currentIndex++;
+            } else {
+                currentIndex = 0; // Loop para o início
+            }
+            updateCarousel();
+        });
+
+        prevButton.addEventListener('click', () => {
+            const totalSlides = slides.length;
+            const maxIndex = totalSlides - itemsPerScreen;
+
+            if (currentIndex > 0) {
+                currentIndex--;
+            } else {
+                currentIndex = maxIndex; // Loop para o final
+            }
+            updateCarousel();
+        });
+
+        window.addEventListener('resize', updateCarousel);
+        updateCarousel();
     }
 
-    let currentIndex = 0;
-    const totalSlides = slides.length;
+    // ==================================================
+    // 2. LÓGICA DO HERO SLIDER (LINKS)
+    // ==================================================
+
+    // Seleciona os LINKS (<a>) dentro do slider, não apenas as imagens
+    const heroLinks = document.querySelectorAll('.hero-slider a');
     
-    const slideWidth = slides[0].getBoundingClientRect().width + 20;
+    if (heroLinks.length > 0) {
+        let currentHeroIndex = 0;
+        const heroInterval = 5000; // 5 segundos
 
-    const moveToSlide = (targetIndex) => {
-        track.style.transform = `translateX(-${slideWidth * targetIndex}px)`;
-        currentIndex = targetIndex;
+        const nextHeroImage = () => {
+            // 1. Esconde o link atual
+            heroLinks[currentHeroIndex].classList.remove('active');
+
+            // 2. Calcula o próximo
+            currentHeroIndex = (currentHeroIndex + 1) % heroLinks.length;
+
+            // 3. Mostra o próximo link
+            heroLinks[currentHeroIndex].classList.add('active');
+        };
+
+        setInterval(nextHeroImage, heroInterval);
     }
-
-    nextButton.addEventListener('click', () => {
-        let nextIndex = currentIndex + 1;
-        
-        if (nextIndex >= totalSlides) {
-            nextIndex = 0;
-        }
-        moveToSlide(nextIndex);
-    });
-
-    prevButton.addEventListener('click', () => {
-        let prevIndex = currentIndex - 1;
-
-        if (prevIndex < 0) {
-            prevIndex = totalSlides - 1;
-        }
-        moveToSlide(prevIndex);
-    });
 });
