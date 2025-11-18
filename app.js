@@ -1,1 +1,4 @@
-mostrarFilmes();
+// mostrarFilmes();
+
+
+addEventListener();

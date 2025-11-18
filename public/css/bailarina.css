@@ -1,146 +1,207 @@
-body { 
-    font-family: Arial, sans-serif;
+/* --- 1. ESTILO GERAL & BACKGROUND (PADRÃO CINEMUNDO) --- */
+* {
     margin: 0;
     padding: 0;
-    background-color:rgb(0, 0, 0);
-    background: linear-gradient(to bottom, black, rgb(98, 98, 207));
-    height: 100vh;
-    overflow: hidden;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #0b0b2b, #1b2735 70%, #090a0f);
+    color: #fff;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
 }
 
+/* --- Background Animado (Estrelas) --- */
+.stars {
+    width: 1px; height: 1px; position: absolute; 
+    background: white;
+    box-shadow: 2vw 5vh 2px white, 10vw 8vh 2px white, 15vw 15vh 1px white, 22vw 22vh 1px white, 28vw 12vh 2px white, 32vw 32vh 1px white, 38vw 18vh 2px white, 42vw 35vh 1px white, 48vw 25vh 2px white, 53vw 42vh 1px white, 58vw 15vh 2px white, 63vw 38vh 1px white, 68vw 28vh 2px white, 73vw 45vh 1px white, 78vw 32vh 2px white, 83vw 48vh 1px white, 88vw 20vh 2px white, 93vw 52vh 1px white, 98vw 35vh 2px white;
+    animation: twinkle 8s infinite linear;
+    top: 0; left: 0; z-index: -2;
+}
+
+.stars::after {
+    content: ""; position: absolute; width: 1px; height: 1px;
+    background: white;
+    box-shadow: 8vw 12vh 2px white, 16vw 18vh 1px white, 24vw 25vh 2px white, 33vw 15vh 1px white, 41vw 28vh 2px white, 49vw 35vh 1px white, 57vw 22vh 2px white, 65vw 42vh 1px white, 73vw 28vh 2px white, 81vw 48vh 1px white;
+    animation: twinkle 6s infinite linear reverse;
+}
+
+.shooting-star {
+    position: absolute;
+    width: 100px; height: 2px;
+    background: linear-gradient(90deg, white, transparent);
+    animation: shoot 3s infinite ease-in;
+    z-index: -1;
+}
+
+.shooting-star:nth-child(2) { top: 20%; left: -100px; animation-delay: 0s; }
+.shooting-star:nth-child(3) { top: 35%; left: -100px; animation-delay: 1s; }
+
+@keyframes twinkle { 0%, 100% { opacity: 0.8; } 50% { opacity: 0.4; } }
+@keyframes shoot { 0% { transform: translateX(0) translateY(0) rotate(25deg); opacity: 1; } 100% { transform: translateX(120vw) translateY(50vh) rotate(25deg); opacity: 0; } }
+
+/* --- 2. NAVBAR (PADRÃO) --- */
 header {
-    background-color:rgb(0, 0, 0);
-    background: linear-gradient(to bottom, black, rgb(98, 98, 207));
-    color: #fff;
-    padding: 10px 0;
-    text-align: center;
+    width: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between; align-items: center;
+    z-index: 100;
+    position: relative;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    color: goldenrod; 
+header .tiulo {
+    font-size: 45px; font-weight: bold;
+    margin-left: 12px;
+    color: white;
+    text-shadow: 0 0 10px #ff6600;
 }
 
-h1 a {
-    text-decoration: none;
+header nav ul li { display: inline; margin-left: 20px; }
+
+header nav ul li a {
+    color: white; text-decoration: none;
+    font-size: 1.1em; font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    transition: color 0.3s;
 }
 
+header nav ul li a:hover { color: #ff6600; }
+
+/* --- 3. LAYOUT DO FILME (ESPECÍFICO DA PÁGINA) --- */
+
+main {
+    flex: 1; /* Empurra o footer para baixo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    position: relative;
+    z-index: 10;
+}
 
 .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 40px 20px;
-    max-width: 900px;
+    padding: 50px;
+    max-width: 1000px;
     margin: 0 auto;
+    /* Estilo de "Cartão" Vidro Escuro */
+    background: rgba(20, 20, 20, 0.85); 
+    border: 1px solid #333;
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.7);
     flex-wrap: wrap;
 }
 
+/* Coluna de Texto */
 .movie-info {
-    max-width: 500px;
-    margin-right: 20px;
-    text-align: left;
+    flex: 1;
+    padding-right: 40px;
+    text-align: left; /* Padronizado para Esquerda */
 }
 
 .movie-info h2 {
-    font-size: 28px;
+    font-size: 32px;
     margin-bottom: 15px;
+    color: #ff6600; /* Laranja Padrão */
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .movie-info h3 {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    color: #ccc;
+    font-weight: normal;
 }
 
 .movie-info p {
-    margin-bottom: 25px;
-    line-height: 1.6;
+    margin-bottom: 30px;
+    line-height: 1.8;
+    font-size: 1.1em;
+    color: #eee;
 }
 
+/* Botão de Compra */
 .button {
-    background-color: yellow;
+    background-color: #ff6600; /* Laranja */
+    color: white;
     border: none;
-    padding: 12px 25px;
+    padding: 15px 30px;
     font-size: 18px;
+    font-weight: bold;
     cursor: pointer;
     text-align: center;
     text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+    border-radius: 50px; /* Botão arredondado moderno */
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 102, 0, 0.3);
+    display: inline-block;
 }
 
 .button:hover {
-    background-color: gold;
+    background-color: white;
+    color: #ff6600;
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #ff6600;
 }
 
+/* Poster do Filme */
 .movie-poster {
     max-width: 350px;
+    width: 100%;
     height: auto;
     border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    margin-top: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    border: 2px solid #444;
     flex-shrink: 0;
+    transition: transform 0.3s;
 }
 
-/* Responsivo para telas menores */
+.movie-poster:hover {
+    transform: scale(1.02);
+    border-color: #ff6600;
+}
+
+/* --- Responsividade (Mobile) --- */
 @media (max-width: 768px) {
     .container {
-        flex-direction: column;
-        align-items: center;
-        padding: 20px 10px;
+        flex-direction: column-reverse; /* Imagem em cima, texto em baixo */
+        padding: 30px 20px;
     }
 
     .movie-info {
-        max-width: 100%;
-        margin-right: 0;
+        padding-right: 0;
         text-align: center;
+        margin-top: 30px;
     }
 
     .movie-poster {
-        max-width: 80%;
-        margin-top: 30px;
+        max-width: 250px;
+    }
+    
+    .movie-info h2 {
+        font-size: 26px;
     }
 }
 
-.movie-info h2 {
-    text-align: right;
-    font-size: 24px;
-    margin-bottom: 10px;
-}
-
-.movie-info h3 {
-    text-align: right;
-    margin-bottom: 5px;
-}
-
-.movie-info p {
-    text-align: right;
-    margin-bottom: 20px;
-}
-
-.button {
-    background-color: yellow;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
+/* --- 4. FOOTER SIMPLES --- */
+.footer-real {
     text-align: center;
-    text-decoration: none;
-    border-radius: 5px;
-}
-
-.movie-poster {
-    max-width: 300px;
-    height: auto;
-}
-
-footer {
-    text-align: center;
-    padding: 10px 0;
-    background: #333;
-    color: goldenrod; 
-    position: relative;
-    bottom: 0;
+    padding: 20px;
+    background-color: #000;
+    color: #888;
+    font-size: 0.9em;
+    border-top: 1px solid #333;
     width: 100%;
+    z-index: 20;
 }
