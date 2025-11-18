@@ -6,7 +6,7 @@ exports.listarFilmes = async (req, res) => {
     res.json(filmes);
   } catch (error) {
     res.status(500).json({ erro: error.message });
-  }
+  } 
 };
 
 exports.buscarPorId = async (req, res) => {
