@@ -1,74 +1,157 @@
-@import url('https://fonts.googleapis.com/css2?family=Inria+Serif:wght@400;700&display=swap');
+/* --- Base e Fundo (Igual aos outros) --- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to bottom, #0b0b2b, #1b2735 70%, #090a0f);
+    color: #fff;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+}
 
+/* Estrelas */
+.stars { width: 1px; height: 1px; position: absolute; background: white; box-shadow: 2vw 5vh 2px white, 10vw 8vh 2px white, 15vw 15vh 1px white; animation: twinkle 8s infinite linear; z-index: -2; }
+@keyframes twinkle { 0%, 100% { opacity: 0.8; } 50% { opacity: 0.4; } }
+
+/* Header Simplificado */
+header {
+    width: 100%; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; z-index: 100;
+}
+header .tiulo { font-size: 30px; font-weight: bold; color: white; text-shadow: 0 0 10px #ff6600; }
+header nav ul li { display: inline; margin-left: 20px; }
+header nav ul li a { color: white; text-decoration: none; }
+
+/* --- Layout Login --- */
 .login-container {
-    background: linear-gradient(145deg, #f7f3ef, #dfd9d4);
-    border-radius: 15px;
-    box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.login-box {
+    background: rgba(20, 20, 20, 0.9);
     padding: 40px;
-    width: 400px;
+    border-radius: 15px;
+    border: 1px solid #333;
+    width: 100%;
+    max-width: 400px;
     text-align: center;
+    box-shadow: 0 0 30px rgba(255, 102, 0, 0.2);
 }
 
-.login-form h2 {
+.login-box h2 {
+    color: #ff6600;
+    margin-bottom: 30px;
+}
+
+.input-group {
+    position: relative;
     margin-bottom: 20px;
-    font-size: 36px;
-    color: #7a7a7a;
-}
-
-.login-form label {
-    display: block;
     text-align: left;
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #7a7a7a;
 }
 
-.login-form input[type="text"],
-.login-form input[type="password"] {
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ff6600;
+}
+
+.input-group input {
     width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border: none;
-    border-radius: 30px;
-    box-shadow: inset 5px 5px 10px #d1c8c1, inset -5px -5px 10px #fff;
-    font-size: 16px;
-    background-color: #f7f7f7;
-    color: #7a7a7a;
-}
-
-.login-form button {
-    background-color: #007bff;
+    padding: 12px 15px 12px 45px; /* Espaço para o ícone */
+    background: #333;
+    border: 1px solid #444;
+    border-radius: 5px;
     color: white;
-    font-size: 18px;
-    padding: 12px;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #ff6600;
+}
+
+.btn-entrar {
     width: 100%;
+    padding: 12px;
+    background-color: #ff6600;
+    color: white;
     border: none;
-    border-radius: 30px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    font-size: 1.1em;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background 0.3s;
 }
 
-.login-form button:hover {
-    background-color: #0056b3;
+.btn-entrar:hover {
+    background-color: #e65c00;
 }
 
-
-
-.login-form button:active {
-    transform: scale(0.98); /* Efeito de clique */
-}
-
-
-.create-account {
+.cadastro-link {
     margin-top: 20px;
+    border-top: 1px solid #444;
+    padding-top: 15px;
 }
 
-.create-account a {
-    color: #007bff;
-    text-decoration: none;
+.cadastro-link p { margin-bottom: 10px; color: #ccc; }
+
+#btnAbrirCadastro {
+    background: none;
+    border: 2px solid #ff6600;
+    color: #ff6600;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
 }
 
-.create-account a:hover {
-    text-decoration: underline;
+#btnAbrirCadastro:hover {
+    background: #ff6600;
+    color: white;
 }
+
+/* --- MODAL POP-UP (Oculto por padrão) --- */
+.modal-overlay {
+    display: none; /* Escondido inicialmente */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.85); /* Fundo preto transparente */
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #1a1a1a;
+    padding: 40px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 450px;
+    position: relative;
+    border: 2px solid #ff6600;
+    text-align: center;
+    animation: slideDown 0.4s ease;
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px; right: 20px;
+    font-size: 30px;
+    color: #aaa;
+    cursor: pointer;
+}
+.close-btn:hover { color: #ff6600; }
+
+.footer-real { text-align: center; padding: 20px; font-size: 0.8em; color: #555; }

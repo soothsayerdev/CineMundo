@@ -3,56 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compra de Ingressos - CinePico</title>
+    <title>CineMundo - Finalizar Compra</title>
     <link rel="stylesheet" href="css/compra.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+
+    <div class="stars"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+
     <header>
-        <h1><a href="principal.html">CinePico</a></h1>
-    </header> 
-    <br><br><br>
+        <a href="principal.html" class="tiulo">CineMundo</a>
+        <nav>
+            <ul>
+                <li><a href="principal.html#inicio">Início</a></li>
+                <li><a href="principal.html#filmes-em-cartaz">Filmes</a></li>
+                <li><a href="principal.html#contato-localizacao">Contato</a></li>
+                <li><a href="login.html" class="btn-login">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
     <main>
-        <h2>Compra de Ingressos</h2>
-        <div class="container">
-            <form id="form-compra">
-                <label for="nome">Nome do Filme:</label>
-                <input type="text" id="nome" name="nome" required>
-                <label for="nome">Seu Nome:</label>
-                <input type="text" id="nome" name="nome" required>
+        <div class="compra-container">
+            <h2>🎟️ Garantir Ingresso</h2>
+            <p class="subtitulo">Preencha os dados para receber a confirmação.</p>
 
-                <label for="quantidade">Quantidade de Ingressos:</label>
-                <select id="quantidade" name="quantidade">
-                    <option value="0">Selecione</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
+            <form class="form-compra">
+                
+                <div class="grupo-input">
+                    <label for="filme">Escolha o Filme:</label>
+                    <div class="input-icon">
+                        <i class="fas fa-film"></i>
+                        <select id="filme" required>
+                            <option value="" disabled selected>Selecione um filme...</option>
+                            <option value="auto">O Auto da Compadecida 2</option>
+                            <option value="bailarina">Bailarina</option>
+                            <option value="aindaestouaqui">Ainda Estou Aqui</option>
+                            <option value="capitao">Capitão América</option>
+                            <option value="garota">A Garota Dinamarquesa</option>
+                            <option value="segundotempo">Segundo Tempo</option>
+                            <option value="sharknado">Sharknado</option>
+                            <option value="thunderbolts">Thunderbolts*</option>
+                            <option value="menino">O Menino e a Garça</option>
+                            <option value="minecraft">Um Filme Minecraft</option>
+                            <option value="nosferatu">Nosferatu</option>
+                            <option value="crime">Sob a Lei do Crime</option>
+                        </select>
+                    </div>
+                </div>
 
-                <button type="submit">Finalizar Compra</button>
+                <div class="grupo-input">
+                    <label for="nome">Nome Completo:</label>
+                    <div class="input-icon">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="nome" placeholder="O seu nome" required>
+                    </div>
+                </div>
+
+                <div class="linha-dupla">
+                    <div class="grupo-input">
+                        <label for="telefone">Telefone (SMS):</label>
+                        <div class="input-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                            <input type="tel" id="telefone" placeholder="(xx) 9xxxx-xxxx" required>
+                        </div>
+                    </div>
+
+                    <div class="grupo-input">
+                        <label for="email">Email (Confirmação):</label>
+                        <div class="input-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="email" placeholder="seu@email.com" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pagamento-section">
+                    <label>Forma de Pagamento:</label>
+                    <div class="opcoes-pagamento">
+                        
+                        <label class="opcao-card">
+                            <input type="radio" name="pagamento" value="credito" required>
+                            <div class="card-content">
+                                <i class="fas fa-credit-card"></i>
+                                <span>Crédito</span>
+                            </div>
+                        </label>
+
+                        <label class="opcao-card">
+                            <input type="radio" name="pagamento" value="debito">
+                            <div class="card-content">
+                                <i class="fas fa-money-check-alt"></i>
+                                <span>Débito</span>
+                            </div>
+                        </label>
+
+                        <label class="opcao-card">
+                            <input type="radio" name="pagamento" value="pix">
+                            <div class="card-content">
+                                <i class="brands fa-pix"></i> <span>PIX</span>
+                            </div>
+                        </label>
+
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-finalizar">Confirmar Compra</button>
+
             </form>
-
-            <div class="combos-container">
-                <h3>Escolha seus Combos</h3>
-                <div class="combo">
-                    <img src="img/combo1.jpg.png" alt="Combo 1">
-                    <label><input type="radio" name="combo"> Combo 1: Pipoca grande acompanhada de dois refrigerantes(500ml) - R$25 </label>
-                </div>
-                <div class="combo">
-                    <img src="img/combo2.jpg.png" alt="Combo 2">
-                    <label><input type="radio" name="combo"> Combo 2: Pipoca média acompanhada de um Refrigerante(500ml) - R$18 </label>
-                </div>
-                <div class="combo">
-                    <img src="img/combo3.jpg.png" alt="Combo 3">
-                    <label><input type="radio" name="combo"> Combo 3: Duas pipocas médias acompanhadas de dois refrigerantes(500ml) e um chocolate - R$30 </label>
-                </div>
-            </div>
         </div>
     </main>
-    <br><br> 
-    <footer>
-        <p>&copy; 2023 CinePico. Todos os direitos reservados.</p>
+
+    <footer class="footer-real">
+        <p>© 2025 CineMundo - Todos os direitos reservados.</p>
     </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>

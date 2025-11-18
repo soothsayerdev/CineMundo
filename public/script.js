@@ -1,79 +1,92 @@
-/*
-HEAD: Script Principal - CineMundo
-- Contém: Lógica do Carrossel de Filmes (Loop Infinito) e Hero Slider (Links Clicáveis).
-*/
-
 document.addEventListener('DOMContentLoaded', () => {
-
-    // ==================================================
-    // 1. LÓGICA DO CARROSSEL DE FILMES
-    // ==================================================
-
-    const track = document.querySelector('.carrossel-track');
-    const prevButton = document.getElementById('prevBtn');
-    const nextButton = document.getElementById('nextBtn');
-    const viewport = document.querySelector('.carrossel-viewport');
-    const itemsPerScreen = 4;
-
-    if (track && prevButton && nextButton && viewport) {
-        const slides = Array.from(track.children);
-        let currentIndex = 0;
-
-        const updateCarousel = () => {
-            const slideWidth = viewport.offsetWidth / itemsPerScreen;
-            track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
-        };
-
-        nextButton.addEventListener('click', () => {
-            const totalSlides = slides.length;
-            const maxIndex = totalSlides - itemsPerScreen;
-
-            if (currentIndex < maxIndex) {
-                currentIndex++;
-            } else {
-                currentIndex = 0; // Loop para o início
-            }
-            updateCarousel();
-        });
-
-        prevButton.addEventListener('click', () => {
-            const totalSlides = slides.length;
-            const maxIndex = totalSlides - itemsPerScreen;
-
-            if (currentIndex > 0) {
-                currentIndex--;
-            } else {
-                currentIndex = maxIndex; // Loop para o final
-            }
-            updateCarousel();
-        });
-
-        window.addEventListener('resize', updateCarousel);
-        updateCarousel();
-    }
-
-    // ==================================================
-    // 2. LÓGICA DO HERO SLIDER (LINKS)
-    // ==================================================
-
-    // Seleciona os LINKS (<a>) dentro do slider, não apenas as imagens
-    const heroLinks = document.querySelectorAll('.hero-slider a');
     
-    if (heroLinks.length > 0) {
-        let currentHeroIndex = 0;
-        const heroInterval = 5000; // 5 segundos
+    /* ===========================================================
+       1. GERAL (Funcionalidades que podem ser usadas em todo o site)
+       =========================================================== */
+    console.log("CineMundo: Script carregado com sucesso! 🎬");
 
-        const nextHeroImage = () => {
-            // 1. Esconde o link atual
-            heroLinks[currentHeroIndex].classList.remove('active');
 
-            // 2. Calcula o próximo
-            currentHeroIndex = (currentHeroIndex + 1) % heroLinks.length;
+    /* ===========================================================
+       2. PÁGINA PRINCIPAL - CARROSSEL DE FILMES
+       =========================================================== */
+    const track = document.querySelector('.carrossel-track');
+    const btnPrev = document.getElementById('prevBtn');
+    const btnNext = document.getElementById('nextBtn');
 
-            // 3. Mostra o próximo link
-            heroLinks[currentHeroIndex].classList.add('active');
-        };
+    // Só executa se o carrossel existir na página
+    if (track && btnPrev && btnNext) {
+        let scrollAmount = 0;
+        const cardWidth = 240; // Largura do card + margem (ajuste se necessário)
 
-        setInterval(nextHeroImage, heroInterval);
+        btnNext.addEventListener('click', () => {
+            const maxScroll = track.scrollWidth - track.clientWidth;
+            scrollAmount += cardWidth;
+            if (scrollAmount > maxScroll) {
+                scrollAmount = 0; // Volta ao início se chegar ao fim
+            }
+            track.style.transform = `translateX(-${scrollAmount}px)`;
+        });
+
+        btnPrev.addEventListener('click', () => {
+            scrollAmount -= cardWidth;
+            if (scrollAmount < 0) {
+                // Vai para o final se estiver no início (opcional)
+                scrollAmount = track.scrollWidth - track.clientWidth; 
+            }
+            track.style.transform = `translateX(-${scrollAmount}px)`;
+        });
     }
+
+
+    /* ===========================================================
+       3. PÁGINA DE PROMOÇÕES - ANIMAÇÃO DOS CARDS
+       =========================================================== */
+    const promoCards = document.querySelectorAll('.promo-card');
+
+    // Só executa se houver cards de promoção na página
+    if (promoCards.length > 0) {
+        promoCards.forEach((card, index) => {
+            // Define estado inicial (invisível e deslocado)
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.6s ease';
+
+            // Animação sequencial (um após o outro)
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 200 * (index + 1)); // 200ms de intervalo entre cada card
+        });
+    }
+
+
+    /* ===========================================================
+       4. PÁGINA DE LOGIN - MODAL DE CADASTRO
+       =========================================================== */
+    const modal = document.getElementById('modalCadastro');
+    const btnAbrir = document.getElementById('btnAbrirCadastro');
+    const btnFechar = document.getElementById('btnFecharCadastro');
+
+    // Só executa se o modal existir (ou seja, estamos na página de Login)
+    if (modal && btnAbrir && btnFechar) {
+        
+        // Abrir o Modal
+        btnAbrir.addEventListener('click', (e) => {
+            e.preventDefault(); // Previne comportamento padrão do botão
+            modal.style.display = 'flex';
+        });
+
+        // Fechar o Modal (Clicar no X)
+        btnFechar.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        // Fechar o Modal (Clicar fora da caixa branca)
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    }
+
 });

@@ -1,42 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="public/css/login.css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Document</title>
+    <title>CineMundo - Login</title>
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <h1 class="titulo" >CineMundo 🗺️ </h1>
-            <ul>
-                <li><a href="compra.html">Ingressos</a></li> 
-                <li><a href="principal.html">Home</a></li> 
-                <li><a href="#localizacao">Localização</a></li>
-                <li><a href="promocoes.html">Promocões</a></li>
-                <li><a href="#contato">Contato</a></li>
-                <li><a href="login.html">Login</a></li>
 
+    <div class="stars"></div>
+    <div class="shooting-star"></div>
+
+    <header>
+        <a href="principal.html" class="tiulo">CineMundo</a>
+        <nav>
+            <ul>
+                <li><a href="principal.html#inicio">Início</a></li>
+                <li><a href="principal.html#filmes-em-cartaz">Filmes</a></li>
+                <li><a href="principal.html#contato-localizacao">Contato</a></li>
             </ul>
         </nav>
     </header>
-    <div class="login-container">
-        <form class="login-form">
-            <h2>Login</h2>
-            <label for="username">Usuário:</label>
-            <input type="text" id="username" name="username" required>
-            <label for="password">Senha:</label>
-            <input type="password" id="password" name="password" required>
-            <button type="submit">Entrar</button>
-        </form>
+
+    <main class="login-container">
+        
+        <div class="login-box">
+            <h2>Bem-vindo de volta! 🎬</h2>
+            <form>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" placeholder="O seu email" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" placeholder="A sua senha" required>
+                </div>
+                
+                <button type="submit" class="btn-entrar">Entrar</button>
+            </form>
+            
+            <div class="cadastro-link">
+                <p>Ainda não tem conta?</p>
+                <button id="btnAbrirCadastro">Cadastre-se Gratuitamente</button>
+            </div>
         </div>
 
-        <div class="create-account">  
-            <p>Ainda não tem uma conta? <a href="criarcc.html">Crie uma aqui</a></p>  
-        </div>    
-        </form>  
+    </main>
+
+    <div id="modalCadastro" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" id="btnFecharCadastro">&times;</span>
+            <h2>Criar Nova Conta</h2>
+            <p>Junte-se ao CineMundo!</p>
+            
+            <form>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="Nome Completo" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" placeholder="Email" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" placeholder="Senha" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-check-circle"></i>
+                    <input type="password" placeholder="Confirmar Senha" required>
+                </div>
+
+                <button type="submit" class="btn-entrar">Cadastrar</button>
+            </form>
+        </div>
     </div>
-    
+
+    <footer class="footer-real">
+        <p>© 2025 CineMundo - Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="js/login.js"></script>
+
 </body>
 </html>
