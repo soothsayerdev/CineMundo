@@ -2,86 +2,153 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CineMundo - Login</title>
     <link rel="stylesheet" href="css/login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-    <div class="stars"></div>
-    <div class="shooting-star"></div>
-
     <header>
-        <a href="principal.html" class="tiulo">CineMundo</a>
+        <a href="principal.html" class="tiulo" style="text-decoration: none; color: white;">CineMundo</a>
         <nav>
             <ul>
-                <li><a href="principal.html#inicio">Início</a></li>
+                <li><a href="principal.html">Início</a></li>
                 <li><a href="principal.html#filmes-em-cartaz">Filmes</a></li>
                 <li><a href="principal.html#contato-localizacao">Contato</a></li>
+                <li><a href="#" id="btn-abrir-cadastro" class="btn-destaque">Cadastre-se</a></li>
             </ul>
         </nav>
     </header>
 
-    <main class="login-container">
-        
+    <div class="login-container">
         <div class="login-box">
-            <h2>Bem-vindo de volta! 🎬</h2>
-            <form>
+            <h2>Login de Acesso</h2>
+            <form id="form-login">
                 <div class="input-group">
                     <i class="fas fa-envelope"></i>
-                    <input type="email" placeholder="O seu email" required>
+                    <input type="email" id="login-email" placeholder="Email" required>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-lock"></i>
-                    <input type="password" placeholder="A sua senha" required>
+                    <input type="password" id="login-senha" placeholder="Senha" required>
                 </div>
-                
-                <button type="submit" class="btn-entrar">Entrar</button>
+                <button type="submit" class="btn-entrar">ENTRAR</button>
             </form>
-            
-            <div class="cadastro-link">
-                <p>Ainda não tem conta?</p>
-                <button id="btnAbrirCadastro">Cadastre-se Gratuitamente</button>
-            </div>
+            <p class="esqueceu-senha"><a href="#">Esqueceu a senha?</a></p>
         </div>
+    </div>
 
-    </main>
-
-    <div id="modalCadastro" class="modal-overlay">
+    <div id="modal-cadastro" class="modal-overlay">
         <div class="modal-content">
-            <span class="close-btn" id="btnFecharCadastro">&times;</span>
+            <span class="close-modal">&times;</span>
             <h2>Criar Nova Conta</h2>
-            <p>Junte-se ao CineMundo!</p>
+            <p>Preencha os dados para acessar o CineMundo.</p>
             
-            <form>
+            <form id="form-cadastro">
                 <div class="input-group">
                     <i class="fas fa-user"></i>
-                    <input type="text" placeholder="Nome Completo" required>
+                    <input type="text" id="cad-nome" placeholder="Nome Completo" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-id-card"></i>
+                    <input type="text" id="cad-cpf" placeholder="CPF" required>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-envelope"></i>
-                    <input type="email" placeholder="Email" required>
+                    <input type="email" id="cad-email" placeholder="Seu melhor Email" required>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-lock"></i>
-                    <input type="password" placeholder="Senha" required>
+                    <input type="password" id="cad-senha" placeholder="Crie uma Senha" required>
                 </div>
-                <div class="input-group">
-                    <i class="fas fa-check-circle"></i>
-                    <input type="password" placeholder="Confirmar Senha" required>
-                </div>
-
-                <button type="submit" class="btn-entrar">Cadastrar</button>
+                <button type="submit" class="btn-cadastrar-final">CONFIRMAR CADASTRO</button>
             </form>
         </div>
     </div>
 
-    <footer class="footer-real">
-        <p>© 2025 CineMundo - Todos os direitos reservados.</p>
-    </footer>
+    <script src="script.js"></script>
+    <script>
+        // Lógica do Modal
+        const modal = document.getElementById("modal-cadastro");
+        const btnAbrir = document.getElementById("btn-abrir-cadastro");
+        const spanFechar = document.getElementsByClassName("close-modal")[0];
 
-    <script src="js/login.js"></script>
+        // Abrir
+        btnAbrir.onclick = function(e) {
+            e.preventDefault(); // Evita que a página recarregue
+            modal.style.display = "flex";
+        }
 
+        // Fechar no X
+        spanFechar.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // Fechar clicando fora
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Lógica de Envio do Cadastro (Conectando ao Banco)
+        document.getElementById('form-cadastro').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const dados = {
+                nome: document.getElementById('cad-nome').value,
+                cpf: document.getElementById('cad-cpf').value,
+                email: document.getElementById('cad-email').value,
+                senha: document.getElementById('cad-senha').value
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/api/clientes', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dados)
+                });
+
+                if (response.ok) {
+                    alert("Cadastro realizado com sucesso! Agora faça Login.");
+                    modal.style.display = "none";
+                    // Preenche o login automaticamente para facilitar
+                    document.getElementById('login-email').value = dados.email;
+                } else {
+                    alert("Erro ao cadastrar. Verifique os dados.");
+                }
+            } catch (error) {
+                console.error("Erro:", error);
+                alert("Erro de conexão com o servidor.");
+            }
+        });
+
+        // Lógica de Login (Existente)
+        document.getElementById('form-login').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const senha = document.getElementById('login-senha').value;
+
+            try {
+                const response = await fetch('http://localhost:3000/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, senha })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Salva sessão
+                    localStorage.setItem('usuario', JSON.stringify(data.usuario));
+                    window.location.href = "principal.html";
+                } else {
+                    alert(data.message || "Email ou senha incorretos.");
+                }
+            } catch (error) {
+                console.error("Erro de Login:", error);
+            }
+        });
+    </script>
 </body>
 </html>

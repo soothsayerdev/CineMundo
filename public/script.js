@@ -90,3 +90,70 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
+/* ===========================================================
+       5. PÁGINA DE COMPRA - AIDICONAR AO CARRINHO
+       =========================================================== */
+function adicionarAoCarrinho(nomeFilme) {
+    if(!localStorage.getItem('usuario')) {
+        alert("Faça login primeiro!");
+        window.location.href = "login.html";
+        return;
+    }
+    localStorage.setItem('filmeSelecionado', nomeFilme);
+    window.location.href = "carrinho.html";
+}
+
+// Atualiza o numerozinho vermelho no carrinho
+function atualizarIconeCarrinho() {
+    const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+    const icon = document.getElementById('contagem-carrinho');
+    if(icon) icon.innerText = carrinho.length;
+}
+
+// Função genérica para adicionar qualquer coisa
+function adicionarItem(titulo, preco, tipo) {
+    // Verifica login antes
+    const usuario = localStorage.getItem('usuario');
+    if (!usuario) {
+        alert("Por favor, faça login para comprar.");
+        window.location.href = "login.html";
+        return;
+    }
+
+    let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+    
+    carrinho.push({
+        titulo: titulo,
+        preco: preco,
+        tipo: tipo // 'ingresso' ou 'combo'
+    });
+
+    localStorage.setItem('carrinho', JSON.stringify(carrinho));
+    atualizarIconeCarrinho();
+    
+    // Feedback visual simples
+    alert(`"${titulo}" (${tipo}) adicionado ao carrinho!`);
+}
+
+// Funções específicas para os botões do HTML
+function comprarIngresso(nomeFilme, tipoEntrada) {
+    let preco = (tipoEntrada === 'inteira') ? 20.00 : 10.00;
+    let nomeItem = `${nomeFilme} - ${tipoEntrada.toUpperCase()}`;
+    adicionarItem(nomeItem, preco, 'ingresso');
+}
+
+function comprarCombo(nomeCombo) {
+    // Define preços fixos para combos ou recebe como parametro
+    let preco = 45.00; // Valor exemplo para combos
+    adicionarItem(nomeCombo, preco, 'combo');
+}
+
+// Ao carregar a página
+document.addEventListener("DOMContentLoaded", atualizarIconeCarrinho);
+
+function irParaCarrinho() {
+    //  Verificar login antes
+    if(!localStorage.getItem('usuario')) { alert('Faça login'); return; }
+    window.location.href = 'compra.html';
+}

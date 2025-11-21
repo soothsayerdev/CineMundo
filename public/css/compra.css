@@ -221,3 +221,58 @@ main {
 .footer-real {
     text-align: center; padding: 20px; background-color: #000; color: #888; border-top: 1px solid #333;
 }
+
+/* Modal de Drama (Sobreposição) */
+.modal-drama-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.5s;
+}
+
+/* Conteúdo do Modal */
+.modal-drama-content {
+    background: #1a0505; /* Vermelho escuro quase preto */
+    border: 2px solid red;
+    padding: 40px;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
+    max-width: 400px;
+}
+
+.modal-drama-content h2 {
+    color: red;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.modal-drama-content p {
+    color: white;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.btn-drama {
+    background: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.btn-drama:hover {
+    background: darkred;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

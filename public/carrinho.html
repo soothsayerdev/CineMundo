@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>CineMundo - Carrinho</title>
+    <link rel="stylesheet" href="css/principal.css"> <style>
+        /* Estilo simples para o carrinho */
+        .carrinho-container { padding: 50px; color: white; text-align: center; }
+        .resumo-compra { background: #333; padding: 20px; border-radius: 10px; margin-top: 20px; }
+        .btn-finalizar { background-color: #e50914; color: white; padding: 10px 20px; border: none; cursor: pointer; font-size: 18px; margin-top: 20px;}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>O Seu Carrinho</h1>
+    </header>
+
+    <div class="carrinho-container">
+        <div id="itens-carrinho">
+            <p>A carregar filmes...</p>
+        </div>
+
+        <div id="pagamento-section" style="display:none;">
+            <h3>Forma de Pagamento</h3>
+            <select id="metodo-pagamento">
+                <option value="pix">PIX</option>
+                <option value="cartao">Cartão de Crédito</option>
+            </select>
+            
+            <div id="form-cartao" style="display:none; margin-top:10px;">
+                <input type="text" placeholder="Número do Cartão" required><br>
+                <input type="text" placeholder="Nome no Cartão" required><br>
+                <input type="text" placeholder="Validade" required> <input type="text" placeholder="CVV" required>
+            </div>
+        </div>
+
+        <button class="btn-finalizar" onclick="finalizarCompra()">Finalizar Compra</button>
+    </div>
+
+    <script>
+        // 1. Verificação de Segurança (Login)
+        const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
+        
+        if (!usuarioLogado) {
+            alert("Você precisa estar logado para acessar o carrinho!");
+            window.location.href = "login.html";
+        } else {
+            // Mostra a secção de pagamento se estiver logado
+            document.getElementById('pagamento-section').style.display = 'block';
+            carregarItensDoCarrinho();
+        }
+
+        // Simulação de carregamento de itens (normalmente viria de uma seleção anterior)
+        function carregarItensDoCarrinho() {
+            const filmeSelecionado = localStorage.getItem('filmeSelecionado') || "Filme Exemplo";
+            const horarioSelecionado = localStorage.getItem('horarioSelecionado') || "20:00";
+            const valor = "R$ 35,00";
+            
+            document.getElementById('itens-carrinho').innerHTML = `
+                <div class="resumo-compra">
+                    <h2>${filmeSelecionado}</h2>
+                    <p>Data: Hoje | Horário: ${horarioSelecionado}</p>
+                    <p>Valor: ${valor}</p>
+                    <p>Cliente: ${usuarioLogado.nome}</p>
+                </div>
+            `;
+        }
+
+        // Lógica de exibição do cartão
+        document.getElementById('metodo-pagamento').addEventListener('change', function() {
+            const formCartao = document.getElementById('form-cartao');
+            formCartao.style.display = this.value === 'cartao' ? 'block' : 'none';
+        });
+
+        // Função para chamar a API
+        function finalizarCompra() {
+            const dadosCompra = {
+                usuarioId: usuarioLogado.id,
+                nome: usuarioLogado.nome,
+                cpf: usuarioLogado.cpf, // Assumindo que guardamos isto no login
+                valor: 35.00,
+                descricao: "Ingresso de Cinema - " + (localStorage.getItem('filmeSelecionado') || "Filme Padrão"),
+                metodoPagamento: document.getElementById('metodo-pagamento').value
+            };
+
+            fetch('http://localhost:3000/api/comprar', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(dadosCompra)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message); // Mostra mensagem de sucesso ou instruções do PIX
+                if(data.pixCode) {
+                    prompt("Copie o seu código PIX:", data.pixCode);
+                }
+            })
+            .catch(error => console.error('Erro:', error));
+        }
+    </script>
+</body>
+</html>
