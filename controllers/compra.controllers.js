@@ -1,63 +1,59 @@
-// Função auxiliar para gerar código aleatório
-function gerarCodigoPix() {
-    return '00020126580014BR.GOV.BCB.PIX0136' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-}
+const { connectToDatabase, sql } = require('../config/database');
 
-// Função auxiliar para "Enviar" SPAM
-function enviarSpam(tipo, dados) {
-    console.log("\n==================================================");
-    console.log(`[SIMULAÇÃO DE ENVIO - ${tipo}]`);
-    console.log(`PARA: ${dados.nome} (CPF: ${dados.cpf})`);
-    console.log(`MENSAGEM: ${dados.mensagem}`);
-    if (dados.detalhes) {
-        console.log(`DETALHES: ${dados.detalhes}`);
+exports.criarCompra = async (req, res) => {
+    const { cliente_id, total, metodo_pagamento, itens } = req.body;
+    // itens espera um array: [{ descricao: "Ingresso X", quantidade: 2, valor: 20.00, tipo: "INGRESSO" }]
+
+    let pool;
+    try {
+        pool = await connectToDatabase();
+        const transaction = new sql.Transaction(pool);
+        
+        // Inicia a transação (tudo ou nada)
+        await transaction.begin();
+
+        try {
+            // 1. Criar a Compra Principal
+            const requestCompra = new sql.Request(transaction);
+            const resultCompra = await requestCompra
+                .input('cliente_id', sql.Int, cliente_id)
+                .input('valor_total', sql.Decimal(10, 2), total)
+                .input('metodo_pagamento', sql.VarChar, metodo_pagamento)
+                .query(`
+                    INSERT INTO Compras (cliente_id, valor_total, metodo_pagamento, data_hora) 
+                    OUTPUT INSERTED.id 
+                    VALUES (@cliente_id, @valor_total, @metodo_pagamento, GETDATE())
+                `);
+            
+            const compraId = resultCompra.recordset[0].id;
+
+            // 2. Inserir os Itens da Compra
+            for (const item of itens) {
+                const requestItem = new sql.Request(transaction);
+                await requestItem
+                    .input('compra_id', sql.Int, compraId)
+                    .input('descricao', sql.VarChar, item.descricao)
+                    .input('qtd', sql.Int, item.quantidade)
+                    .input('valor', sql.Decimal(10, 2), item.valor)
+                    .input('tipo', sql.VarChar, item.tipo) // 'INGRESSO' ou 'COMBO'
+                    .query(`
+                        INSERT INTO Itens_Compra (compra_id, descricao_item, quantidade, valor_unitario, tipo_item)
+                        VALUES (@compra_id, @descricao, @qtd, @valor, @tipo)
+                    `);
+            }
+
+            // Confirma a gravação no banco
+            await transaction.commit();
+            res.status(201).json({ message: 'Compra realizada com sucesso!', id: compraId });
+
+        } catch (err) {
+            // Se der erro em qualquer item, cancela tudo
+            await transaction.rollback();
+            throw err;
+        }
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Erro ao processar compra', detalhes: err.message });
     }
-    console.log("==================================================\n");
-}
-
-exports.finalizarCompra = (req, res) => {
-    const { nome, cpf, valor, descricao, metodoPagamento } = req.body;
-    
-    const dataAtual = new Date().toLocaleDateString('pt-BR');
-    const horaAtual = new Date().toLocaleTimeString('pt-BR');
-
-    // 5. Criar código PIX ou processar cartão
-    let respostaCliente = {};
-    let mensagemInicial = "";
-
-    if (metodoPagamento === 'pix') {
-        const pixCode = gerarCodigoPix();
-        respostaCliente = { 
-            message: "Compra iniciada! Use o código PIX gerado.", 
-            pixCode: pixCode 
-        };
-        mensagemInicial = `Pagamento Pendente via PIX. Código: ${pixCode}`;
-    } else {
-        respostaCliente = { message: "Dados do cartão recebidos. Processando..." };
-        mensagemInicial = "Pagamento em análise via Cartão de Crédito.";
-    }
-
-    // 3. Envio do SPAM imediato (Confirmação de Pedido)
-    enviarSpam("EMAIL/SMS", {
-        nome: nome,
-        cpf: cpf,
-        mensagem: "Recebemos o seu pedido de compra!",
-        detalhes: `Item: ${descricao} | Valor: R$ ${valor} | Data: ${dataAtual} às ${horaAtual} | Status: ${mensagemInicial}`
-    });
-
-    // Responder ao Frontend para não travar o site
-    res.send(respostaCliente);
-
-    // 6. O DRAMA - Temporizador de 15 minutos (simulado aqui como 15 segundos para testares, muda para 900000 para 15 min)
-    // 15 minutos = 15 * 60 * 1000 = 900000 milissegundos
-    const tempoDrama = 15 * 60 * 1000; 
-    
-    setTimeout(() => {
-        enviarSpam("EMAIL/SMS - FALHA DRAMÁTICA", {
-            nome: nome,
-            cpf: cpf,
-            mensagem: "⚠️ URGENTE: OS SEUS INGRESSOS FORAM PERDIDOS! ⚠️",
-            detalhes: `Infelizmente o tempo de 15 minutos expirou e o pagamento de R$ ${valor} para "${descricao}" não foi identificado. O sistema cedeu o seu lugar para outra pessoa. Tente ser mais rápido da próxima vez!`
-        });
-    }, tempoDrama);
 };

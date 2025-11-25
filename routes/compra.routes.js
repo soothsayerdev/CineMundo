@@ -1,9 +1,7 @@
-module.exports = app => {
-    const compra = require("../controllers/compra.controller.js");
-    var router = require("express").Router();
+const express = require('express');
+const router = express.Router();
+const compraController = require('../controllers/compra.controller');
 
-    // Rota para finalizar a compra
-    router.post("/comprar", compra.finalizarCompra);
+router.post('/', compraController.criarCompra); // Rota POST para enviar o carrinho
 
-    app.use('/api', router);
-};
+module.exports = router;
