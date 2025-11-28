@@ -1,89 +1,59 @@
-const { sql, connectToDatabase } = require('../config/database');
+const Cliente = require('../models/cliente.model');
 
-/* ===========================================================
-   1. REGISTO DE NOVO CLIENTE (Criar Conta)
-   =========================================================== */
-exports.create = async (req, res) => {
-    const { nome, email, senha, cpf } = req.body;
-
-    if (!nome || !email || !senha) {
-        return res.status(400).send({ message: "Preencha todos os campos obrigatórios!" });
-    }
-
-    try {
-        const pool = await connectToDatabase();
-
-        // Verifica duplicidade
-        const checkResult = await pool.request()
-            .input('email', sql.NVarChar, email)
-            .query('SELECT * FROM Cliente WHERE Email = @email');
-
-        if (checkResult.recordset.length > 0) {
-            return res.status(400).send({ message: "Este email já está cadastrado." });
-        }
-
-        // Insere
-        const insertQuery = `
-            INSERT INTO Cliente (Nome_Completo, Email, Senha, CPF)
-            VALUES (@nome, @email, @senha, @cpf)
-        `;
-
-        await pool.request()
-            .input('nome', sql.NVarChar, nome)
-            .input('email', sql.NVarChar, email)
-            .input('senha', sql.NVarChar, senha)
-            .input('cpf', sql.VarChar, cpf)
-            .query(insertQuery);
-
-        res.status(201).send({ message: "Cliente cadastrado com sucesso!" });
-
-    } catch (err) {
-        console.error("Erro no cadastro:", err);
-        res.status(500).send({ message: "Erro interno ao cadastrar cliente." });
-    }
+// Listar todos (para testes)
+exports.listarClientes = async (req, res) => {
+  try {
+    const clientes = await Cliente.findAll();
+    res.json(clientes);
+  } catch (error) {
+    res.status(500).send({ message: 'Erro ao listar clientes.' });
+  }
 };
 
-/* ===========================================================
-   2. LOGIN (Autenticação)
-   =========================================================== */
-exports.login = async (req, res) => {
+// Criar novo cliente (CADASTRO)
+exports.criarCliente = async (req, res) => {
+  try {
+    // 1. Recebe os dados do corpo do pedido
+    const { nome, email, senha } = req.body;
+
+    // 2. Validação básica
+    if (!nome || !email || !senha) {
+      return res.status(400).send({ message: 'Todos os campos são obrigatórios!' });
+    }
+
+    // 3. Cria no banco de dados
+    const novoCliente = await Cliente.create({
+      nome,
+      email,
+      senha // Nota: Em produção, deves encriptar a senha!
+    });
+
+    res.status(201).json({ message: 'Cliente cadastrado com sucesso!', id: novoCliente.id });
+  } catch (error) {
+    console.error("Erro no cadastro:", error);
+    res.status(500).send({ message: 'Erro ao criar cliente. Verifique se o email já existe.' });
+  }
+};
+
+// Validar Login (NOVO!)
+exports.validarLogin = async (req, res) => {
+  try {
     const { email, senha } = req.body;
+    
+    // Procura o cliente pelo email
+    const cliente = await Cliente.findOne({ where: { email: email } });
 
-    if (!email || !senha) {
-        return res.status(400).send({ message: "Email e senha são obrigatórios." });
+    if (!cliente) {
+      return res.status(404).send({ message: 'Usuário não encontrado.' });
     }
 
-    try {
-        const pool = await connectToDatabase();
-
-        const query = 'SELECT * FROM Cliente WHERE Email = @email';
-        const result = await pool.request()
-            .input('email', sql.NVarChar, email)
-            .query(query);
-
-        if (result.recordset.length === 0) {
-            return res.status(404).send({ message: "Usuário não encontrado." });
-        }
-
-        const usuario = result.recordset[0];
-
-        // Comparação de senha
-        if (senha === usuario.Senha) {
-            res.status(200).send({
-                message: "Login realizado com sucesso!",
-                usuario: {
-                    id: usuario.ID,
-                    nome: usuario.Nome_Completo,
-                    email: usuario.Email,
-                    cpf: usuario.CPF
-                }
-            });
-        } else {
-            res.status(401).send({ message: "Senha incorreta." });
-        }
-
-    } catch (err) {
-        console.error("Erro no login:", err);
-        res.status(500).send({ message: "Erro no servidor ao tentar fazer login." });
+    // Verifica a senha (comparação simples para agora)
+    if (cliente.senha === senha) {
+      res.status(200).json({ message: 'Login realizado com sucesso!', nome: cliente.nome });
+    } else {
+      res.status(401).send({ message: 'Senha incorreta.' });
     }
+  } catch (error) {
+    res.status(500).send({ message: 'Erro ao processar login.' });
+  }
 };
