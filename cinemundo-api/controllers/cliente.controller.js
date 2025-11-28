@@ -1,46 +1,89 @@
-const Cliente = require("../models/cliente.model");
+const { sql, connectToDatabase } = require('../config/database');
 
-// Criar e Salvar novo Cliente (Registo)
-exports.create = (req, res) => {
-  // Validação simples
-  if (!req.body) {
-    res.status(400).send({ message: "O conteúdo não pode estar vazio!" });
-    return;
-  }
+/* ===========================================================
+   1. REGISTO DE NOVO CLIENTE (Criar Conta)
+   =========================================================== */
+exports.create = async (req, res) => {
+    const { nome, email, senha, cpf } = req.body;
 
-  // Criar objeto Cliente
-  const cliente = new Cliente({
-    email: req.body.email,
-    senha: req.body.senha,
-    nome: req.body.nome,
-    cpf: req.body.cpf
-  });
+    if (!nome || !email || !senha) {
+        return res.status(400).send({ message: "Preencha todos os campos obrigatórios!" });
+    }
 
-  // Guardar no Banco
-  Cliente.create(cliente, (err, data) => {
-    if (err)
-      res.status(500).send({ message: err.message || "Erro ao criar o cliente." });
-    else res.send(data);
-  });
+    try {
+        const pool = await connectToDatabase();
+
+        // Verifica duplicidade
+        const checkResult = await pool.request()
+            .input('email', sql.NVarChar, email)
+            .query('SELECT * FROM Cliente WHERE Email = @email');
+
+        if (checkResult.recordset.length > 0) {
+            return res.status(400).send({ message: "Este email já está cadastrado." });
+        }
+
+        // Insere
+        const insertQuery = `
+            INSERT INTO Cliente (Nome_Completo, Email, Senha, CPF)
+            VALUES (@nome, @email, @senha, @cpf)
+        `;
+
+        await pool.request()
+            .input('nome', sql.NVarChar, nome)
+            .input('email', sql.NVarChar, email)
+            .input('senha', sql.NVarChar, senha)
+            .input('cpf', sql.VarChar, cpf)
+            .query(insertQuery);
+
+        res.status(201).send({ message: "Cliente cadastrado com sucesso!" });
+
+    } catch (err) {
+        console.error("Erro no cadastro:", err);
+        res.status(500).send({ message: "Erro interno ao cadastrar cliente." });
+    }
 };
 
-// Login (Autenticação)
-exports.login = (req, res) => {
-  const email = req.body.email;
-  const senha = req.body.senha;
+/* ===========================================================
+   2. LOGIN (Autenticação)
+   =========================================================== */
+exports.login = async (req, res) => {
+    const { email, senha } = req.body;
 
-  Cliente.findByEmailAndPassword(email, senha, (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({ message: `Usuário não encontrado.` });
-      } else {
-        res.status(500).send({ message: "Erro no servidor." });
-      }
-    } else {
-      res.send({
-        message: "Login sucesso",
-        usuario: { id: data.id, nome: data.nome, email: data.email, cpf: data.cpf }
-      });
+    if (!email || !senha) {
+        return res.status(400).send({ message: "Email e senha são obrigatórios." });
     }
-  });
+
+    try {
+        const pool = await connectToDatabase();
+
+        const query = 'SELECT * FROM Cliente WHERE Email = @email';
+        const result = await pool.request()
+            .input('email', sql.NVarChar, email)
+            .query(query);
+
+        if (result.recordset.length === 0) {
+            return res.status(404).send({ message: "Usuário não encontrado." });
+        }
+
+        const usuario = result.recordset[0];
+
+        // Comparação de senha
+        if (senha === usuario.Senha) {
+            res.status(200).send({
+                message: "Login realizado com sucesso!",
+                usuario: {
+                    id: usuario.ID,
+                    nome: usuario.Nome_Completo,
+                    email: usuario.Email,
+                    cpf: usuario.CPF
+                }
+            });
+        } else {
+            res.status(401).send({ message: "Senha incorreta." });
+        }
+
+    } catch (err) {
+        console.error("Erro no login:", err);
+        res.status(500).send({ message: "Erro no servidor ao tentar fazer login." });
+    }
 };
