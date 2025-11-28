@@ -1,34 +1,46 @@
-// URL da tua API (Ajusta se a porta mudar)
+// 🌐 URL da API
 const API_URL = 'http://localhost:3000/api/clientes';
 
-// Espera o HTML carregar completamente antes de rodar o script
 document.addEventListener('DOMContentLoaded', () => {
     
     // ==========================================
-    // 1. LÓGICA DO CARROSSEL DE FILMES 🎡
+    // 0️⃣ SLIDER DE PROMOÇÕES (HERO) 🎬
     // ==========================================
-    const filmesContainer = document.querySelector('.filme-container');
-    const filmes = document.querySelectorAll('.filme');
-    const nextBtn = document.getElementById('next');
-    const prevBtn = document.getElementById('prev');
+    const heroSlides = document.querySelectorAll('.hero-slider a');
+    if (heroSlides.length > 0) {
+        let currentSlide = 0;
+        
+        function nextSlide() {
+            heroSlides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % heroSlides.length;
+            heroSlides[currentSlide].classList.add('active');
+        }
+        
+        setInterval(nextSlide, 5000); // Troca a cada 5 segundos
+    }
     
-    // Só executa se existirem filmes na página
-    if (filmesContainer && filmes.length > 0) {
+    // ==========================================
+    // 1️⃣ CARROSSEL DE FILMES 🎡
+    // ==========================================
+    const carrosselTrack = document.querySelector('.carrossel-track');
+    const carrosselSlides = document.querySelectorAll('.carrossel-slide');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    
+    if (carrosselTrack && carrosselSlides.length > 0) {
         let currentIndex = 0;
-        const filmesPorPagina = 4; 
-        const totalFilmes = filmes.length;
+        const slidesPorPagina = 4;
+        const totalSlides = carrosselSlides.length;
+        const slideWidth = 240;
 
         function updateCarousel() {
-            // Calcula quantos % deve mover para a esquerda
-            // Ex: index 1 * (100 / 4) = 25% de deslocamento
-            const offset = -(currentIndex * (100 / filmesPorPagina)); 
-            filmesContainer.style.transform = `translateX(${offset}%)`;
+            const offset = -(currentIndex * slideWidth);
+            carrosselTrack.style.transform = `translateX(${offset}px)`;
         }
 
         if (nextBtn) {
             nextBtn.addEventListener('click', () => {
-                // Impede de avançar se chegar ao fim
-                if (currentIndex < totalFilmes - filmesPorPagina) {
+                if (currentIndex < totalSlides - slidesPorPagina) {
                     currentIndex++;
                     updateCarousel();
                 }
@@ -37,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (prevBtn) {
             prevBtn.addEventListener('click', () => {
-                // Impede de voltar se estiver no início
                 if (currentIndex > 0) {
                     currentIndex--;
                     updateCarousel();
@@ -47,21 +58,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 2. LÓGICA DE CADASTRO (REGISTER) 📝
+    // 2️⃣ CADASTRO 📝
     // ==========================================
     const formCadastro = document.getElementById('form-cadastro');
 
     if (formCadastro) {
         formCadastro.addEventListener('submit', async (e) => {
-            e.preventDefault(); // Impede a página de recarregar
+            e.preventDefault();
 
-            // Pega os valores dos inputs
             const nome = document.getElementById('cadastro-nome').value;
             const email = document.getElementById('cadastro-email').value;
             const senha = document.getElementById('cadastro-senha').value;
 
             try {
-                const response = await fetch(API_URL, { // POST para /api/clientes
+                const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ nome, email, senha })
@@ -71,8 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (response.ok) {
                     alert('Cadastro realizado com sucesso! 🎉');
-                    // Opcional: Mudar para a tela de login
-                    // container.classList.remove("active"); 
                 } else {
                     alert('Erro: ' + data.message);
                 }
@@ -84,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 3. LÓGICA DE LOGIN 🔐
+    // 3️⃣ LOGIN 🔐
     // ==========================================
     const formLogin = document.getElementById('form-login');
 
@@ -96,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const senha = document.getElementById('login-senha').value;
 
             try {
-                const response = await fetch(`${API_URL}/login`, { // POST para /api/clientes/login
+                const response = await fetch(`${API_URL}/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, senha })
@@ -106,7 +114,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (response.ok) {
                     alert(`Bem-vindo de volta, ${data.nome}! 🍿`);
-                    window.location.href = 'index.html'; // Redireciona para a página principal
+                    localStorage.setItem('usuarioNome', data.nome);
+                    localStorage.setItem('usuarioId', data.id);
+                    window.location.href = 'principal.html';
                 } else {
                     alert('Login falhou: ' + data.message);
                 }

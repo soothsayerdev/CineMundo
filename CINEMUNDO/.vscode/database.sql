@@ -2,7 +2,7 @@
 -- BANCO DE DADOS CINEMUNDO (ATUALIZADO)
 -- ==================================================================
 
-USE databaseori;
+USE database CINEMUNDO;
 GO
 -- ==================================================================
 -- CRIAÇÃO DAS TABELAS

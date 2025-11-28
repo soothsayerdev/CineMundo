@@ -1,22 +1,17 @@
+// 📦 Importa controller e configura rotas
 module.exports = app => {
     const clientes = require("../controllers/cliente.controller.js");
-    var router = require("express").Router();
+    const router = require("express").Router();
 
-    // ==========================================================
-    // DEFINIÇÃO DAS ROTAS (ENDPOINTS)
-    // ==========================================================
-
-    // Criar um novo cliente (Cadastro)
-    // Rota final: POST http://localhost:3000/api/clientes
+    // 1️⃣ POST /api/clientes - Cadastrar novo cliente
     router.post("/", clientes.create);
 
-    // Fazer Login
-    // Rota final: POST http://localhost:3000/api/clientes/login
+    // 2️⃣ POST /api/clientes/login - Fazer login
     router.post("/login", clientes.login);
 
-    // ==========================================================
-    // PREFIXO DA ROTA
-    // Todas as rotas acima começam com /api/clientes
-    // ==========================================================
+    // 3️⃣ GET /api/clientes - Listar todos (debug)
+    router.get("/", clientes.listarClientes);
+
+    // 🔗 Registra rotas com prefixo /api/clientes
     app.use('/api/clientes', router);
 };

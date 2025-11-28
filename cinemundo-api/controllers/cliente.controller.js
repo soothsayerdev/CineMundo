@@ -1,59 +1,81 @@
+// 📦 Importa modelo de cliente (SQL Server ou Mock)
 const Cliente = require('../models/cliente.model');
+const ClienteMock = require('../models/cliente.model.mock');
 
-// Listar todos (para testes)
-exports.listarClientes = async (req, res) => {
-  try {
-    const clientes = await Cliente.findAll();
-    res.json(clientes);
-  } catch (error) {
-    res.status(500).send({ message: 'Erro ao listar clientes.' });
-  }
-};
+// 🔄 Flag para determinar se usa banco real ou mock
+let useMock = false;
 
-// Criar novo cliente (CADASTRO)
-exports.criarCliente = async (req, res) => {
-  try {
-    // 1. Recebe os dados do corpo do pedido
+// 1️⃣ CREATE - Cadastrar novo cliente
+exports.create = (req, res) => {
     const { nome, email, senha } = req.body;
 
-    // 2. Validação básica
+    // Validação
     if (!nome || !email || !senha) {
-      return res.status(400).send({ message: 'Todos os campos são obrigatórios!' });
+        return res.status(400).send({ message: 'Todos os campos são obrigatórios!' });
     }
 
-    // 3. Cria no banco de dados
-    const novoCliente = await Cliente.create({
-      nome,
-      email,
-      senha // Nota: Em produção, deves encriptar a senha!
-    });
+    const novoCliente = { nome, email, senha };
+    const model = useMock ? ClienteMock : Cliente;
 
-    res.status(201).json({ message: 'Cliente cadastrado com sucesso!', id: novoCliente.id });
-  } catch (error) {
-    console.error("Erro no cadastro:", error);
-    res.status(500).send({ message: 'Erro ao criar cliente. Verifique se o email já existe.' });
-  }
+    model.create(novoCliente, (err, data) => {
+        if (err) {
+            console.error("❌ Erro no cadastro:", err);
+            res.status(500).send({ 
+                message: err.message || 'Erro ao criar cliente.' 
+            });
+        } else {
+            console.log(`✅ Cliente cadastrado: ${data.nome} (${useMock ? 'MOCK' : 'DB'})`);
+            res.status(201).json({ 
+                message: 'Cliente cadastrado com sucesso!', 
+                id: data.id 
+            });
+        }
+    });
 };
 
-// Validar Login (NOVO!)
-exports.validarLogin = async (req, res) => {
-  try {
+// 2️⃣ LOGIN - Validar credenciais
+exports.login = (req, res) => {
     const { email, senha } = req.body;
     
-    // Procura o cliente pelo email
-    const cliente = await Cliente.findOne({ where: { email: email } });
-
-    if (!cliente) {
-      return res.status(404).send({ message: 'Usuário não encontrado.' });
+    if (!email || !senha) {
+        return res.status(400).send({ message: 'Email e senha são obrigatórios!' });
     }
 
-    // Verifica a senha (comparação simples para agora)
-    if (cliente.senha === senha) {
-      res.status(200).json({ message: 'Login realizado com sucesso!', nome: cliente.nome });
-    } else {
-      res.status(401).send({ message: 'Senha incorreta.' });
-    }
-  } catch (error) {
-    res.status(500).send({ message: 'Erro ao processar login.' });
-  }
+    const model = useMock ? ClienteMock : Cliente;
+
+    model.findByEmailAndPassword(email, senha, (err, data) => {
+        if (err) {
+            if (err.kind === "not_found") {
+                res.status(404).send({ message: 'Usuário não encontrado ou senha incorreta.' });
+            } else {
+                res.status(500).send({ message: 'Erro ao processar login.' });
+            }
+        } else {
+            console.log(`✅ Login: ${data.nome} (${useMock ? 'MOCK' : 'DB'})`);
+            res.status(200).json({ 
+                message: 'Login realizado com sucesso!', 
+                nome: data.nome,
+                id: data.id 
+            });
+        }
+    });
+};
+
+// 3️⃣ LISTAR - Todos os clientes (debug)
+exports.listarClientes = (req, res) => {
+    const model = useMock ? ClienteMock : Cliente;
+    
+    model.findAll((err, data) => {
+        if (err) {
+            res.status(500).send({ message: 'Erro ao listar clientes.' });
+        } else {
+            res.json(data);
+        }
+    });
+};
+
+// 4️⃣ CONFIGURAR - Modo de operação
+exports.setUseMock = (value) => {
+    useMock = value;
+    console.log(`🔄 Modo alterado: ${useMock ? 'MOCK (sem banco)' : 'DATABASE (banco real)'}`);
 };

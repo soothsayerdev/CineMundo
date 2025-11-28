@@ -1,274 +1,299 @@
-/* --- Base e Fundo (Igual aos outros) --- */
-* { margin: 0; padding: 0; box-sizing: border-box; }
+/* ===========================
+   RESET E CONFIGURAÇÃO BASE
+   =========================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     background: linear-gradient(to bottom, #0b0b2b, #1b2735 70%, #090a0f);
-    color: #fff;
-    min-height: 100vh;
-    display: flex; flex-direction: column;
-}
-
-/* Estrelas */
-.stars { width: 1px; height: 1px; position: absolute; background: white; box-shadow: 2vw 5vh 2px white, 10vw 8vh 2px white, 15vw 15vh 1px white; animation: twinkle 8s infinite linear; z-index: -2; }
-@keyframes twinkle { 0%, 100% { opacity: 0.8; } 50% { opacity: 0.4; } }
-
-/* Header Simplificado */
-header {
-    width: 100%; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; z-index: 100;
-}
-header .tiulo { font-size: 30px; font-weight: bold; color: white; text-shadow: 0 0 10px #ff6600; }
-header nav ul li { display: inline; margin-left: 20px; }
-header nav ul li a { color: white; text-decoration: none; }
-
-/* --- Layout Login --- */
-.login-container {
-    flex: 1;
     display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ===========================
+   CONTAINER PRINCIPAL
+   =========================== */
+.container {
+    background-color: #1a1a1a;
+    border-radius: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    position: relative;
+    overflow: hidden;
+    width: 768px;
+    max-width: 100%;
+    min-height: 480px;
+}
+
+/* ===========================
+   FORMULÁRIOS (Login e Cadastro)
+   =========================== */
+.form-container {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+}
+
+.sign-in {
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
+
+.container.active .sign-in {
+    transform: translateX(100%);
+}
+
+.sign-up {
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
+}
+
+.container.active .sign-up {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+    animation: move 0.6s;
+}
+
+@keyframes move {
+    0%, 49.99% {
+        opacity: 0;
+        z-index: 1;
+    }
+    50%, 100% {
+        opacity: 1;
+        z-index: 5;
+    }
+}
+
+/* ===========================
+   ESTILO DOS FORMULÁRIOS
+   =========================== */
+form {
+    background-color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    height: 100%;
+}
+
+h1 {
+    color: #ff6600;
+    margin-bottom: 10px;
+}
+
+.social-icons {
+    margin: 20px 0;
+}
+
+.social-icons a {
+    border: 1px solid #444;
+    border-radius: 20%;
+    display: inline-flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    margin: 0 3px;
+    width: 40px;
+    height: 40px;
+    transition: 0.3s;
 }
 
-.login-box {
-    background: rgba(20, 20, 20, 0.9);
-    padding: 40px;
-    border-radius: 15px;
-    border: 1px solid #333;
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-    box-shadow: 0 0 30px rgba(255, 102, 0, 0.2);
+.social-icons a:hover {
+    border-color: #ff6600;
 }
 
-.login-box h2 {
-    color: #ff6600;
-    margin-bottom: 30px;
-}
-
-.input-group {
-    position: relative;
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.input-group i {
-    position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
+.icon {
     color: #ff6600;
 }
 
-.input-group input {
-    width: 100%;
-    padding: 12px 15px 12px 45px; /* Espaço para o ícone */
-    background: #333;
+span {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 10px;
+}
+
+input {
+    background-color: #333;
     border: 1px solid #444;
-    border-radius: 5px;
-    color: white;
-    font-size: 1rem;
+    color: #fff;
+    margin: 8px 0;
+    padding: 10px 15px;
+    font-size: 13px;
+    border-radius: 8px;
+    width: 100%;
     outline: none;
     transition: border 0.3s;
 }
 
-.input-group input:focus {
+input:focus {
     border-color: #ff6600;
 }
 
-.btn-entrar {
-    width: 100%;
-    padding: 12px;
+input::placeholder {
+    color: #999;
+}
+
+a {
+    color: #ff6600;
+    font-size: 13px;
+    text-decoration: none;
+    margin: 15px 0 10px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+button {
     background-color: #ff6600;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.1em;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.btn-entrar:hover {
-    background-color: #e65c00;
-}
-
-.cadastro-link {
-    margin-top: 20px;
-    border-top: 1px solid #444;
-    padding-top: 15px;
-}
-
-.cadastro-link p { margin-bottom: 10px; color: #ccc; }
-
-#btnAbrirCadastro {
-    background: none;
-    border: 2px solid #ff6600;
-    color: #ff6600;
-    padding: 8px 20px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.3s;
-}
-
-#btnAbrirCadastro:hover {
-    background: #ff6600;
-    color: white;
-}
-
-/* --- MODAL POP-UP (Oculto por padrão) --- */
-.modal-overlay {
-    display: none; /* Escondido inicialmente */
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(0, 0, 0, 0.85); /* Fundo preto transparente */
-    z-index: 2000;
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-content {
-    background: #1a1a1a;
-    padding: 40px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 450px;
-    position: relative;
-    border: 2px solid #ff6600;
-    text-align: center;
-    animation: slideDown 0.4s ease;
-}
-
-@keyframes slideDown {
-    from { transform: translateY(-50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-.close-btn {
-    position: absolute;
-    top: 10px; right: 20px;
-    font-size: 30px;
-    color: #aaa;
-    cursor: pointer;
-}
-.close-btn:hover { color: #ff6600; }
-
-.footer-real { text-align: center; padding: 20px; font-size: 0.8em; color: #555; }
-
-/* --- FIX 1: NAVBAR EM NEGRITO --- */
-header nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 1.1em;
-    font-weight: bold; /* AQUI ESTÁ A SOLUÇÃO DO NEGRITO */
-    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-    transition: color 0.3s;
-}
-
-header nav ul li a:hover {
-    color: #ff6600;
-}
-
-/* Estilo especial para o botão de cadastro no menu */
-.btn-destaque {
-    border: 1px solid #ff6600;
-    padding: 8px 15px;
-    border-radius: 20px;
-    background: rgba(255, 102, 0, 0.1);
-}
-
-.btn-destaque:hover {
-    background: #ff6600 !important;
-    color: white !important;
-}
-
-/* --- FIX 2: ESTILO DO MODAL (POP-UP) --- */
-
-/* O fundo escuro atrás do modal */
-.modal-overlay {
-    display: none; /* Oculto por padrão */
-    position: fixed; 
-    z-index: 1000; 
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%; 
-    overflow: auto; 
-    background-color: rgba(0,0,0,0.85); /* Fundo bem escuro */
-    justify-content: center;
-    align-items: center;
-    backdrop-filter: blur(5px);
-}
-
-/* A caixa do modal em si */
-.modal-content {
-    background: #1a1a1a;
-    border: 2px solid #ff6600;
-    margin: 10% auto;
-    padding: 30px;
-    border-radius: 15px;
-    width: 90%;
-    max-width: 400px;
-    color: white;
-    text-align: center;
-    box-shadow: 0 0 50px rgba(255, 102, 0, 0.3);
-    position: relative;
-    animation: animatetop 0.4s;
-}
-
-/* Animação de descida */
-@keyframes animatetop {
-    from {top: -300px; opacity: 0}
-    to {top: 0; opacity: 1}
-}
-
-/* Botão fechar (X) */
-.close-modal {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    position: absolute;
-    top: 10px;
-    right: 20px;
-}
-
-.close-modal:hover,
-.close-modal:focus {
-    color: #ff6600;
-    text-decoration: none;
-}
-
-/* Inputs do modal (reutilizando estilo do login) */
-.modal-content .input-group {
-    margin-bottom: 15px;
-    position: relative;
-}
-
-.modal-content input {
-    width: 100%;
-    padding: 10px 10px 10px 40px;
-    border-radius: 5px;
-    border: 1px solid #444;
-    background: #333;
-    color: white;
-}
-
-.btn-cadastrar-final {
-    background: #ff6600;
-    color: white;
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
+    color: #fff;
+    font-size: 12px;
+    padding: 10px 45px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
     margin-top: 10px;
+    cursor: pointer;
     transition: 0.3s;
 }
 
-.btn-cadastrar-final:hover {
-    background: #cc5200;
+button:hover {
+    background-color: #e65c00;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+button.hidden {
+    background-color: transparent;
+    border-color: #fff;
+}
+
+button.hidden:hover {
+    background-color: #fff;
+    color: #ff6600;
+}
+
+/* ===========================
+   TOGGLE CONTAINER (Painéis)
+   =========================== */
+.toggle-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: all 0.6s ease-in-out;
+    border-radius: 150px 0 0 100px;
+    z-index: 1000;
+}
+
+.container.active .toggle-container {
+    transform: translateX(-100%);
+    border-radius: 0 150px 100px 0;
+}
+
+.toggle {
+    background: linear-gradient(to right, #ff6600, #cc5200);
+    height: 100%;
+    color: #fff;
+    position: relative;
+    left: -100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: all 0.6s ease-in-out;
+}
+
+.container.active .toggle {
+    transform: translateX(50%);
+}
+
+.toggle-panel {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 30px;
+    text-align: center;
+    top: 0;
+    transform: translateX(0);
+    transition: all 0.6s ease-in-out;
+}
+
+.toggle-left {
+    transform: translateX(-200%);
+}
+
+.container.active .toggle-left {
+    transform: translateX(0);
+}
+
+.toggle-right {
+    right: 0;
+    transform: translateX(0);
+}
+
+.container.active .toggle-right {
+    transform: translateX(200%);
+}
+
+.toggle-panel h1 {
+    color: #fff;
+}
+
+.toggle-panel p {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.3px;
+    margin: 20px 0;
+}
+
+/* ===========================
+   RESPONSIVIDADE
+   =========================== */
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        min-height: 600px;
+    }
+    
+    .form-container {
+        width: 100%;
+    }
+    
+    .toggle-container {
+        display: none;
+    }
+    
+    .sign-in, .sign-up {
+        width: 100%;
+        position: static;
+    }
+    
+    .container.active .sign-in {
+        transform: none;
+    }
+    
+    .container.active .sign-up {
+        transform: none;
+    }
 }
